@@ -17,12 +17,11 @@
 #include <Qt3DExtras/QPhongMaterial>
 #include <Qt3DExtras/QSphereMesh>
 #include <Qt3DExtras/QTorusMesh>
-
+#include <Qt3DExtras/QOrbitCameraController>
+#include <Qt3DWindow>
 #include <QPropertyAnimation>
 
-#include "qt3dwindow.h"
-#include "orbittransformcontroller.h"
-#include "qorbitcameracontroller.h"
+#include <orbittransformcontroller.hpp>
 
 Qt3DCore::QEntity *createScene()
 {

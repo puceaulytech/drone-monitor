@@ -2,8 +2,7 @@
 // Copyright (C) 2016 The Qt Company Ltd and/or its subsidiary(-ies).
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR BSD-3-Clause
 
-#include "orbittransformcontroller.h"
-
+#include <orbittransformcontroller.hpp>
 #include <Qt3DCore/qtransform.h>
 
 QT_BEGIN_NAMESPACE

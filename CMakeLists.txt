@@ -17,9 +17,12 @@ find_package(Qt6 REQUIRED COMPONENTS
 qt_standard_project_setup()
 
 add_executable(drone-monitor
-    main.cpp
-    orbittransformcontroller.cpp
+  src/main.cpp
+  src/orbittransformcontroller.cpp
+  include/orbittransformcontroller.hpp
 )
+
+include_directories(include)
 
 target_link_libraries(drone-monitor PRIVATE
   Qt6::Widgets
