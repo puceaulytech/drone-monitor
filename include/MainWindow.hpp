@@ -21,10 +21,10 @@ private:
   void setupMenus();
   void setupActions();
 
-  QGridLayout* m_mainLayout;
-  QWidget* m_mainWidget;
+  QGridLayout* m_mainLayout{nullptr};
+  QWidget* m_mainWidget{nullptr};
 
-  LogViewer* m_logViewer;
+  LogViewer* m_logViewer{nullptr};
 
   // Menus
   QMenu* m_helpMenu{nullptr};

@@ -2,10 +2,11 @@
 #include <QLabel>
 #include <QMessageBox>
 
-MainWindow::MainWindow()
-    : m_mainLayout(new QGridLayout()),
-      m_mainWidget(new QWidget()),
-      m_logViewer(new LogViewer()) {
+MainWindow::MainWindow() {
+  m_mainLayout = new QGridLayout();
+  m_mainWidget = new QWidget();
+  m_logViewer = new LogViewer();
+
   setWindowTitle("Drone Monitoring");
   resize(1920, 1080);
 
