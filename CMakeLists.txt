@@ -6,29 +6,33 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Qt6 REQUIRED COMPONENTS
-  Widgets
-  3DCore
-  3DRender
-  3DInput
-  3DLogic
-  3DExtras
-  3DAnimation
+    Widgets
+    3DCore
+    3DRender
+    3DInput
+    3DLogic
+    3DExtras
+    3DAnimation
 )
 qt_standard_project_setup()
 
+file(GLOB_RECURSE SOURCES src/*.cpp)
+file(GLOB_RECURSE HEADERS include/*.hpp)
+
 add_executable(drone-monitor
-  src/main.cpp
-  src/orbittransformcontroller.cpp
-  include/orbittransformcontroller.hpp
+    ${SOURCES}
+    ${HEADERS}
 )
 
 include_directories(include)
 
 target_link_libraries(drone-monitor PRIVATE
-  Qt6::Widgets
-  Qt6::3DCore
-  Qt6::3DRender
-  Qt6::3DLogic
-  Qt6::3DExtras
-  Qt6::3DAnimation
+    Qt6::Widgets
+    Qt6::3DCore
+    Qt6::3DRender
+    Qt6::3DLogic
+    Qt6::3DExtras
+    Qt6::3DAnimation
 )
+
+install(TARGETS drone-monitor)
