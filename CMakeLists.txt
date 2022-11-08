@@ -1,0 +1,31 @@
+cmake_minimum_required(VERSION 3.16)
+
+project(drone-monitor VERSION 1.0.0 LANGUAGES CXX)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+find_package(Qt6 REQUIRED COMPONENTS
+  Widgets
+  3DCore
+  3DRender
+  3DInput
+  3DLogic
+  3DExtras
+  3DAnimation
+)
+qt_standard_project_setup()
+
+add_executable(drone-monitor
+    main.cpp
+    orbittransformcontroller.cpp
+)
+
+target_link_libraries(drone-monitor PRIVATE
+  Qt6::Widgets
+  Qt6::3DCore
+  Qt6::3DRender
+  Qt6::3DLogic
+  Qt6::3DExtras
+  Qt6::3DAnimation
+)
