@@ -9,6 +9,10 @@ class LogViewer : public QTextEdit {
 public:
   LogViewer();
 
+  /*!
+   * Add a line of log to the log viewer
+   * @param log The line of log
+   */
   void printLog(const QString& log);
 };
 
