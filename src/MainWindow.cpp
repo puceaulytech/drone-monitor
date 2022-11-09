@@ -1,12 +1,13 @@
 #include <MainWindow.hpp>
+#include <QDockWidget>
 #include <QLabel>
 #include <QMessageBox>
-#include <QDockWidget>
 
-MainWindow::MainWindow() {
-  m_mainLayout = new QGridLayout();
-  m_mainWidget = new QWidget();
-  m_logViewer = new LogViewer();
+MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
+  m_mainLayout = new QGridLayout;
+  m_mainWidget = new QWidget;
+  m_logViewer = new LogViewer;
+  m_commands = new Commands;
 
   setWindowTitle("Drone Monitoring");
   resize(1920, 1080);
@@ -34,11 +35,28 @@ MainWindow::MainWindow() {
   setCentralWidget(m_mainWidget);
 
   // Left dock
-  auto* leftDockWidget = new QDockWidget("Mega test");
-  leftDockWidget->setWidget(new QLabel("truc sur le téco"));
+  auto* leftDockWidget = new QDockWidget("Commands");
+  leftDockWidget->setWidget(m_commands);
   addDockWidget(Qt::LeftDockWidgetArea, leftDockWidget);
 
   m_logViewer->printLog("Starting Drone Monitor...");
+
+  // Commands
+  connect(m_commands, &Commands::startDrone, this, [=]() {
+    m_logViewer->printLog("Starting THE drone");
+  });
+
+  connect(m_commands, &Commands::stopDrone, this, [=]() {
+    m_logViewer->printLog("Stopping the drone :(");
+  });
+
+  connect(m_commands, &Commands::doSomething, this, [=]() {
+    m_logViewer->printLog("Doing something!");
+  });
+
+  connect(m_commands, &Commands::autoDestruction, this, [=]() {
+    m_logViewer->printLog("KABOOM");
+  });
 }
 
 void MainWindow::setupMenus() {

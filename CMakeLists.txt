@@ -36,16 +36,3 @@ target_link_libraries(drone-monitor PRIVATE
     Qt6::Network
     Qt6::3DAnimation
 )
-
-include(CPack)
-install(TARGETS drone-monitor
-    BUNDLE  DESTINATION .
-    RUNTIME DESTINATION ${CMAKE_INSTALL_DIR}
-)
-
-qt_generate_deploy_app_script(
-    TARGET drone-monitor
-    FILENAME_VARIABLE deploy_script
-    NO_UNSUPPORTED_PLATFORM_ERROR
-)
-install(SCRIPT ${deploy_script})

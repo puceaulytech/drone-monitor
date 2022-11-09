@@ -6,14 +6,22 @@
 #include <QTextEdit>
 
 class LogViewer : public QTextEdit {
+  Q_OBJECT
+
 public:
-  LogViewer();
+  explicit LogViewer(QWidget* parent = nullptr);
 
   /*!
    * Add a line of log to the log viewer
    * @param log The line of log
    */
   void printLog(const QString& log);
+
+private:
+  /*!
+   * Get the current timestamp
+   */
+  static QString getTimestamp();
 };
 
 #endif
