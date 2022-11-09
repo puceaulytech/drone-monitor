@@ -1,6 +1,7 @@
 #include <MainWindow.hpp>
 #include <QLabel>
 #include <QMessageBox>
+#include <QDockWidget>
 
 MainWindow::MainWindow() {
   m_mainLayout = new QGridLayout();
@@ -31,6 +32,11 @@ MainWindow::MainWindow() {
 
   m_mainWidget->setLayout(m_mainLayout);
   setCentralWidget(m_mainWidget);
+
+  // Left dock
+  auto* leftDockWidget = new QDockWidget("Mega test");
+  leftDockWidget->setWidget(new QLabel("truc sur le téco"));
+  addDockWidget(Qt::LeftDockWidgetArea, leftDockWidget);
 
   m_logViewer->printLog("Starting Drone Monitor...");
 }

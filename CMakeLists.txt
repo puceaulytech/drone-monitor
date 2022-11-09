@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.22)
 
 project(drone-monitor VERSION 1.0.0 LANGUAGES CXX)
 
@@ -13,6 +13,7 @@ find_package(Qt6 REQUIRED COMPONENTS
     3DLogic
     3DExtras
     3DAnimation
+    Network
 )
 qt_standard_project_setup()
 
@@ -32,7 +33,19 @@ target_link_libraries(drone-monitor PRIVATE
     Qt6::3DRender
     Qt6::3DLogic
     Qt6::3DExtras
+    Qt6::Network
     Qt6::3DAnimation
 )
 
-install(TARGETS drone-monitor)
+include(CPack)
+install(TARGETS drone-monitor
+    BUNDLE  DESTINATION .
+    RUNTIME DESTINATION ${CMAKE_INSTALL_DIR}
+)
+
+qt_generate_deploy_app_script(
+    TARGET drone-monitor
+    FILENAME_VARIABLE deploy_script
+    NO_UNSUPPORTED_PLATFORM_ERROR
+)
+install(SCRIPT ${deploy_script})
