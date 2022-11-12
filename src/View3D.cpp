@@ -1,7 +1,7 @@
 #include <View3D.hpp>
 
 View3D::View3D() {
-  defaultFrameGraph()->setClearColor(QColor(QRgb(0x4d4d4f)));
+  defaultFrameGraph()->setClearColor(QColor(QRgb(0x000000)));
 
   m_rootEntity = new Qt3DCore::QEntity;
   m_cameraEntity = camera();
@@ -14,8 +14,8 @@ View3D::View3D() {
 
   m_lightEntity = new Qt3DCore::QEntity(m_rootEntity);
   m_light = new Qt3DRender::QPointLight(m_lightEntity);
-  m_light->setColor("white");
-  m_light->setIntensity(1);
+  m_light->setColor("blue");
+  m_light->setIntensity(15);
   m_lightEntity->addComponent(m_light);
   auto* lightTransform = new Qt3DCore::QTransform(m_lightEntity);
   lightTransform->setTranslation(m_cameraEntity->position());
@@ -24,7 +24,7 @@ View3D::View3D() {
   m_cameraController =
       new Qt3DExtras::QFirstPersonCameraController(m_rootEntity);
   m_cameraController->addComponent(lightTransform);
-
+  m_cameraController->setCamera(m_cameraEntity);
   setRootEntity(m_rootEntity);
 
   addSphere();
