@@ -8,6 +8,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
   m_mainWidget = new QWidget;
   m_logViewer = new LogViewer;
   m_commands = new Commands;
+  m_view3d = new View3D;
 
   setWindowTitle("Drone Monitoring");
   resize(1920, 1080);
@@ -16,7 +17,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
   setupMenus();
 
   // Top left
-  m_mainLayout->addWidget(new QLabel("Truc 1"), 0, 0, Qt::AlignCenter);
+  m_mainLayout->addWidget(QWidget::createWindowContainer(m_view3d), 0, 0);
 
   // Top right
   m_mainLayout->addWidget(new QLabel("Truc 2"), 0, 1, Qt::AlignCenter);

@@ -12,6 +12,7 @@
 #include <QMenuBar>
 #include <QTimer>
 #include <QWidget>
+#include <View3D.hpp>
 
 class MainWindow : public QMainWindow {
   Q_OBJECT
@@ -35,6 +36,7 @@ private:
 
   LogViewer* m_logViewer{nullptr};
   Commands* m_commands{nullptr};
+  View3D* m_view3d{nullptr};
 
   // Menus
   QMenu* m_helpMenu{nullptr};
