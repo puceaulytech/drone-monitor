@@ -5,11 +5,12 @@
 
 #include <QWidget>
 #include <Qt3DExtras>
-
+#include <Qt3DRender>
+#include <Qt3DCore>
 class View3D : public Qt3DExtras::Qt3DWindow {
 public:
   View3D();
-
+  void drawLine(const QVector3D& start, const QVector3D& end, const QColor& color, Qt3DCore::QEntity *_rootEntity);
 private:
   void addSphere();
 
