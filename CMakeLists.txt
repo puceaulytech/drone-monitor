@@ -36,3 +36,21 @@ target_link_libraries(drone-monitor PRIVATE
     Qt6::Network
     Qt6::3DAnimation
 )
+
+set_target_properties(drone-monitor PROPERTIES
+    WIN32_EXECUTABLE ON
+    MACOSX_BUNDLE ON
+)
+
+install(TARGETS drone-monitor
+    BUNDLE  DESTINATION .
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+)
+
+qt_generate_deploy_app_script(
+    TARGET drone-monitor
+    FILENAME_VARIABLE deploy_script
+    NO_UNSUPPORTED_PLATFORM_ERROR
+)
+
+install(SCRIPT ${deploy_script})
