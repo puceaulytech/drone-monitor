@@ -11,9 +11,9 @@
 #include <QMenu>
 #include <QMenuBar>
 #include <QTimer>
+#include <QToolBar>
 #include <QWidget>
 #include <View3D.hpp>
-#include <QToolBar>
 
 class MainWindow : public QMainWindow {
   Q_OBJECT
@@ -23,17 +23,18 @@ public:
 
 private:
   /*!
-   * Setup ugly menus
+   * Setup menus
    */
   void setupMenus();
 
   /*!
-   * Setup ugly menu's actions
+   * Setup menu's actions
    */
   void setupActions();
-   //Setup Good looking toolbar
-  void setupToolBar();
-
+  /*!
+   * Setup toolbar
+   */
+  void setupToolbar();
 
   QGridLayout* m_mainLayout{nullptr};
   QWidget* m_mainWidget{nullptr};
@@ -49,7 +50,7 @@ private:
   // Actions
   QAction* m_aboutQtAction{nullptr};
   QAction* m_aboutAction{nullptr};
-  QToolBar* m_toolBar;
+  QToolBar* m_toolbar;
   QVector<Qt3DCore::QEntity*> m_biteObject;
 
 private Q_SLOTS:
