@@ -1,36 +1,41 @@
 #include <View3D.hpp>
 
+
+
 View3D::View3D() {
   defaultFrameGraph()->setClearColor(QColor(QRgb(0x000000)));
 
   m_rootEntity = new Qt3DCore::QEntity;
   m_cameraEntity = camera();
 
-  m_cameraEntity->lens()->setPerspectiveProjection(45.0f, 16.0f / 9.0f, 0.1f,
-                                                   1000.0f);
+  m_cameraEntity->lens()->setPerspectiveProjection(90.0f, 16.0f / 9.0f, 0.01f,
+                                                   10000.0f);
   m_cameraEntity->setPosition(QVector3D(0, 0, 20.0f));
   m_cameraEntity->setUpVector(QVector3D(0, 1, 0));
   m_cameraEntity->setViewCenter(QVector3D(0, 0, 0));
 
   m_lightEntity = new Qt3DCore::QEntity(m_rootEntity);
   m_light = new Qt3DRender::QPointLight(m_lightEntity);
-  m_light->setColor("blue");
-  m_light->setIntensity(15);
+  m_light->setColor("white");
+  m_light->setIntensity(1);
   m_lightEntity->addComponent(m_light);
   auto* lightTransform = new Qt3DCore::QTransform(m_lightEntity);
   lightTransform->setTranslation(m_cameraEntity->position());
   m_lightEntity->addComponent(lightTransform);
 
   m_cameraController =
-      new Qt3DExtras::QFirstPersonCameraController(m_rootEntity);
+      new Qt3DExtras::QOrbitCameraController(m_rootEntity);
   m_cameraController->addComponent(lightTransform);
   m_cameraController->setCamera(m_cameraEntity);
   setRootEntity(m_rootEntity);
 
-  addSphere();
+  //addSphere();
   drawLine({ 0, 0, 0 }, { 10, 0, 0 }, Qt::red, m_rootEntity); // X
   drawLine({ 0, 0, 0 }, { 0, 10, 0 }, Qt::green, m_rootEntity); // Y
   drawLine({ 0, 0, 0 }, { 0, 0, 10 }, Qt::blue, m_rootEntity); // Z))
+
+  //TODO: trouver le chemin relatif de ce ptn de truc pck wallah jvais cabler a force de ctrl c ctrl v le path du truc
+
 }
 void View3D::drawLine(const QVector3D& start, const QVector3D& end, const QColor& color, Qt3DCore::QEntity *_rootEntity)
 {
@@ -89,6 +94,29 @@ void View3D::drawLine(const QVector3D& start, const QVector3D& end, const QColor
     lineEntity->addComponent(line);
     lineEntity->addComponent(material);
 }
+void View3D::drawFile(const QString path){
+    QFile toDraw(path);
+    if(!toDraw.open(QIODevice::ReadOnly)) {
+
+    }
+    else{
+    int index = 0;
+    QTextStream in(&toDraw);
+    QStringList old;
+    while(!in.atEnd()) {
+        QString line = in.readLine();
+        QStringList fields = line.split(" ");
+
+        if(index !=0){
+
+            drawLine(QVector3D(old[0].toFloat (),old[1].toFloat (),old[2].toFloat ()),QVector3D(fields[0].toFloat (),fields[1].toFloat (),fields[2].toFloat ()),QColor(QRgb(0xff00ff)),m_rootEntity);
+        }
+        old = fields;
+        index++;
+    }
+
+    toDraw.close();}
+}
 void View3D::addSphere() {
   auto* sphereMesh = new Qt3DExtras::QSphereMesh;
   sphereMesh->setRings(20);
@@ -96,11 +124,11 @@ void View3D::addSphere() {
   sphereMesh->setRadius(2);
 
   auto* sphereTransform = new Qt3DCore::QTransform;
-  sphereTransform->setScale(1.3f);
-  sphereTransform->setTranslation(QVector3D(-5.0f, -4.0f, 0.0f));
+  sphereTransform->setScale(1.0f);
+  sphereTransform->setTranslation(QVector3D(0.0f, 0.0f, 1.0f));
 
-  auto* sphereMaterial = new Qt3DExtras::QGoochMaterial();
-  sphereMaterial->setDiffuse(QColor(QRgb(0xa69929)));
+  auto* sphereMaterial = new Qt3DExtras::QPhongMaterial();
+  sphereMaterial->setDiffuse(QColor(QRgb(0x00ffff)));
 
   auto* sphere = new Qt3DCore::QEntity(m_rootEntity);
   sphere->addComponent(sphereMesh);

@@ -7,18 +7,20 @@
 #include <Qt3DExtras>
 #include <Qt3DRender>
 #include <Qt3DCore>
+#include <QFile>
 class View3D : public Qt3DExtras::Qt3DWindow {
 public:
   View3D();
+  void drawFile(const QString path);
   void drawLine(const QVector3D& start, const QVector3D& end, const QColor& color, Qt3DCore::QEntity *_rootEntity);
 private:
-  void addSphere();
 
+  void addSphere();
   Qt3DCore::QEntity* m_rootEntity;
   Qt3DRender::QCamera* m_cameraEntity;
   Qt3DCore::QEntity* m_lightEntity;
   Qt3DRender::QPointLight* m_light;
-  Qt3DExtras::QFirstPersonCameraController* m_cameraController;
+  Qt3DExtras::QOrbitCameraController* m_cameraController;
 };
 
 #endif

@@ -44,7 +44,8 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
 
   // Commands
   connect(m_commands, &Commands::startDrone, this, [=]() {
-    m_logViewer->printLog("Starting THE drone");
+    m_logViewer->printLog("DRAWING THE THING");
+      m_view3d->drawFile("C:/Users/robin/Documents/drone-monitor/data.txt");
   });
 
   connect(m_commands, &Commands::stopDrone, this, [=]() {
