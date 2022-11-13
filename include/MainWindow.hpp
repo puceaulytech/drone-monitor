@@ -39,6 +39,7 @@ private:
   View3D* m_view3d{nullptr};
 
   // Menus
+  QMenu* m_viewMenu{nullptr};
   QMenu* m_helpMenu{nullptr};
 
   // Actions

@@ -41,6 +41,8 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
   leftDockWidget->setWidget(m_commands);
   addDockWidget(Qt::LeftDockWidgetArea, leftDockWidget);
 
+  m_viewMenu->addAction(leftDockWidget->toggleViewAction());
+
   m_logViewer->printLog("Starting Drone Monitor...");
 
   // Commands
@@ -68,6 +70,8 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
 }
 
 void MainWindow::setupMenus() {
+  m_viewMenu = menuBar()->addMenu(tr("&View"));
+
   m_helpMenu = menuBar()->addMenu(tr("&Help"));
   m_helpMenu->insertActions(nullptr, {m_aboutQtAction, m_aboutAction});
 }
