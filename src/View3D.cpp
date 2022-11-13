@@ -28,9 +28,9 @@ View3D::View3D() {
   setRootEntity(m_rootEntity);
 
   // addSphere();
-  drawLine({0, 0, 0}, {10, 0, 0}, Qt::red, m_rootEntity);    // X
-  drawLine({0, 0, 0}, {0, 10, 0}, Qt::green, m_rootEntity);  // Y
-  drawLine({0, 0, 0}, {0, 0, 10}, Qt::blue, m_rootEntity);   // Z))
+  drawLine({0, 0, 0}, {20, 0, 0}, Qt::red, m_rootEntity);    // X
+  drawLine({0, 0, 0}, {0, 20, 0}, Qt::green, m_rootEntity);  // Y
+  drawLine({0, 0, 0}, {0, 0, 20}, Qt::blue, m_rootEntity);   // Z))
 
   // TODO: trouver le chemin relatif de ce ptn de truc pck wallah jvais cabler a
   // force de ctrl c ctrl v le path du truc
@@ -117,7 +117,7 @@ void View3D::drawFile(const QString& path) {
       drawLine(QVector3D(old[0].toFloat(), old[1].toFloat(), old[2].toFloat()),
                QVector3D(fields[0].toFloat(), fields[1].toFloat(),
                          fields[2].toFloat()),
-               QColor(QRgb(0xff00ff)), m_rootEntity);
+               QColor(abs(old[2].toFloat ())*255,255,255), m_rootEntity);
     }
     old = fields;
     index++;
