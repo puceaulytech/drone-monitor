@@ -16,7 +16,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
 
   setupActions();
   setupMenus();
-
+  setupToolBar ();
   // Top left
   m_mainLayout->addWidget(QWidget::createWindowContainer(m_view3d), 0, 0);
 
@@ -40,7 +40,6 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
   auto* leftDockWidget = new QDockWidget("Commands");
   leftDockWidget->setWidget(m_commands);
   addDockWidget(Qt::LeftDockWidgetArea, leftDockWidget);
-
   m_viewMenu->addAction(leftDockWidget->toggleViewAction());
 
   m_logViewer->printLog("Starting Drone Monitor...");
@@ -57,7 +56,8 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
   });
 
   connect(m_commands, &Commands::stopDrone, this, [=]() {
-    m_logViewer->printLog("Stopping the drone :(");
+    m_logViewer->printLog("Centering the camera");
+    m_view3d->centerCamera ();
   });
 
   connect(m_commands, &Commands::doSomething, this, [=]() {
@@ -91,9 +91,31 @@ void MainWindow::setupActions() {
 void MainWindow::showAbout() {
   QMessageBox::about(
       this, "About",
-      "Drone Monitor, made by Romain Chardiny and Robin Perdreau");
+      "Drone Monitor, made by Robin 'Peasant' Perdreau and debbuged by Romain 'Chad' Chardiny");
 }
 
 void MainWindow::showAboutQt() {
   QMessageBox::aboutQt(this);
+}
+void MainWindow::setupToolBar(){
+    QPixmap newpix("../drone-monitor/save.png");
+
+
+    m_toolBar = addToolBar ("Gorgeous toolbar");
+    QAction* drawfile = m_toolBar->addAction(QIcon(newpix), "Draw File");
+    connect(drawfile, &QAction::triggered, m_view3d,[=]{
+
+        auto targetFilename = QFileDialog::getOpenFileName(
+            this, "Open 3D Object", QDir::currentPath(), "Text files (*.txt)");
+        if (targetFilename.isEmpty()) return;
+
+        m_biteObject = m_view3d->drawFile(targetFilename);
+
+    });
+    m_toolBar->addSeparator();
+
+
+
+
+
 }

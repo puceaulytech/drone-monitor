@@ -17,7 +17,7 @@ public:
   QVector<Qt3DCore::QEntity*> drawFile(const QString& path);
   Qt3DCore::QEntity* drawLine(const QVector3D& start, const QVector3D& end,
                               const QColor& color);
-
+   void centerCamera();
 private:
   void addSphere();
   Qt3DCore::QEntity* m_rootEntity;

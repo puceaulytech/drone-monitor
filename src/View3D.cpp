@@ -28,9 +28,23 @@ View3D::View3D() {
   setRootEntity(m_rootEntity);
 
   // addSphere();
-  drawLine({0, 0, 0}, {20, 0, 0}, Qt::red);
-  drawLine({0, 0, 0}, {0, 20, 0}, Qt::green);
-  drawLine({0, 0, 0}, {0, 0, 20}, Qt::blue);
+  drawLine({-20, 0, 0}, {20, 0, 0}, Qt::red);
+  drawLine({0, -20, 0}, {0, 20, 0}, Qt::green);
+  drawLine({0, 0, -20}, {0, 0, 20}, Qt::blue);
+
+
+
+
+
+/*      PROTOTYPE CUSTOM MESH
+  Qt3DCore::QEntity *sphereEntity = new Qt3DCore::QEntity(m_rootEntity);
+      auto *sphereMesh = new Qt3DRender::QMesh();
+      sphereMesh->setSource(QUrl::fromLocalFile("C:/Users/robin/Desktop/VRAC/uploads_files_2582308_Venator+2k/Venator 2k/Venator.obj"));
+  Qt3DRender::QMaterial *material = new Qt3DExtras::QPhongMaterial(m_rootEntity);
+      Qt3DCore::QTransform *sphereTransform = new Qt3DCore::QTransform;
+      sphereEntity->addComponent(sphereMesh);
+          sphereEntity->addComponent(sphereTransform);
+          sphereEntity->addComponent(material);*/
 }
 
 Qt3DCore::QEntity* View3D::drawLine(const QVector3D& start,
@@ -91,6 +105,14 @@ Qt3DCore::QEntity* View3D::drawLine(const QVector3D& start,
   lineEntity->addComponent(material);
 
   return lineEntity;
+}
+
+void View3D::centerCamera(){
+
+
+      m_cameraEntity->setViewCenter(QVector3D(0, 0, 0));
+      m_cameraEntity->setUpVector(QVector3D(0, 1, 0));
+
 }
 
 QVector<Qt3DCore::QEntity*> View3D::drawFile(const QString& path) {
