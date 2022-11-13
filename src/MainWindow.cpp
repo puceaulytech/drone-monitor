@@ -1,5 +1,6 @@
 #include <MainWindow.hpp>
 #include <QDockWidget>
+#include <QFileDialog>
 #include <QLabel>
 #include <QMessageBox>
 
@@ -45,7 +46,12 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
   // Commands
   connect(m_commands, &Commands::startDrone, this, [=]() {
     m_logViewer->printLog("DRAWING THE THING");
-      m_view3d->drawFile("C:/Users/robin/Documents/drone-monitor/data.txt");
+
+    auto targetFilename = QFileDialog::getOpenFileName(
+        this, "Open 3D Object", QDir::currentPath(), "Text files (*.txt)");
+    if (targetFilename.isEmpty()) return;
+
+    m_view3d->drawFile(targetFilename);
   });
 
   connect(m_commands, &Commands::stopDrone, this, [=]() {
