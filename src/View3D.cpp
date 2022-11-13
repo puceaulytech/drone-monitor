@@ -28,23 +28,19 @@ View3D::View3D() {
   setRootEntity(m_rootEntity);
 
   // addSphere();
-  drawLine({0, 0, 0}, {20, 0, 0}, Qt::red, m_rootEntity);    // X
-  drawLine({0, 0, 0}, {0, 20, 0}, Qt::green, m_rootEntity);  // Y
-  drawLine({0, 0, 0}, {0, 0, 20}, Qt::blue, m_rootEntity);   // Z))
-
-  // TODO: trouver le chemin relatif de ce ptn de truc pck wallah jvais cabler a
-  // force de ctrl c ctrl v le path du truc
+  drawLine({0, 0, 0}, {20, 0, 0}, Qt::red);
+  drawLine({0, 0, 0}, {0, 20, 0}, Qt::green);
+  drawLine({0, 0, 0}, {0, 0, 20}, Qt::blue);
 }
-void View3D::drawLine(const QVector3D& start, const QVector3D& end,
-                      const QColor& color, Qt3DCore::QEntity* _rootEntity) {
-  auto* geometry = new Qt3DCore::QGeometry(_rootEntity);
 
-  // position vertices (start and end)
+void View3D::drawLine(const QVector3D& start, const QVector3D& end,
+                      const QColor& color) {
+  auto* geometry = new Qt3DCore::QGeometry(m_rootEntity);
+
   QByteArray bufferBytes;
-  bufferBytes.resize(
-      3 * 2 *
-      sizeof(float));  // start.x, start.y, start.end + end.x, end.y, end.z
+  bufferBytes.resize(3 * 2 * sizeof(float));
   float* positions = reinterpret_cast<float*>(bufferBytes.data());
+
   *positions++ = start.x();
   *positions++ = start.y();
   *positions++ = start.z();
@@ -64,12 +60,11 @@ void View3D::drawLine(const QVector3D& start, const QVector3D& end,
   positionAttribute->setBuffer(buf);
   positionAttribute->setByteStride(3 * sizeof(float));
   positionAttribute->setCount(2);
-  geometry->addAttribute(
-      positionAttribute);  // We add the vertices in the geometry
 
-  // connectivity between vertices
+  geometry->addAttribute(positionAttribute);
+
   QByteArray indexBytes;
-  indexBytes.resize(2 * sizeof(unsigned int));  // start to end
+  indexBytes.resize(2 * sizeof(unsigned int));
   unsigned int* indices = reinterpret_cast<unsigned int*>(indexBytes.data());
   *indices++ = 0;
   *indices++ = 1;
@@ -82,18 +77,16 @@ void View3D::drawLine(const QVector3D& start, const QVector3D& end,
   indexAttribute->setAttributeType(Qt3DCore::QAttribute::IndexAttribute);
   indexAttribute->setBuffer(indexBuffer);
   indexAttribute->setCount(2);
-  geometry->addAttribute(
-      indexAttribute);  // We add the indices linking the points in the geometry
 
-  // mesh
-  auto* line = new Qt3DRender::QGeometryRenderer(_rootEntity);
+  geometry->addAttribute(indexAttribute);
+
+  auto* line = new Qt3DRender::QGeometryRenderer(m_rootEntity);
   line->setGeometry(geometry);
   line->setPrimitiveType(Qt3DRender::QGeometryRenderer::Lines);
-  auto* material = new Qt3DExtras::QPhongMaterial(_rootEntity);
+  auto* material = new Qt3DExtras::QPhongMaterial(m_rootEntity);
   material->setAmbient(color);
 
-  // entity
-  auto* lineEntity = new Qt3DCore::QEntity(_rootEntity);
+  auto* lineEntity = new Qt3DCore::QEntity(m_rootEntity);
   lineEntity->addComponent(line);
   lineEntity->addComponent(material);
 }
@@ -117,7 +110,7 @@ void View3D::drawFile(const QString& path) {
       drawLine(QVector3D(old[0].toFloat(), old[1].toFloat(), old[2].toFloat()),
                QVector3D(fields[0].toFloat(), fields[1].toFloat(),
                          fields[2].toFloat()),
-               QColor(abs(old[2].toFloat ())*255,255,255), m_rootEntity);
+               QColor(abs(old[2].toFloat()) * 255, 255, 255));
     }
     old = fields;
     index++;

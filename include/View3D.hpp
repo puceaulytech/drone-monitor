@@ -13,7 +13,7 @@ public:
   View3D();
   void drawFile(const QString& path);
   void drawLine(const QVector3D& start, const QVector3D& end,
-                const QColor& color, Qt3DCore::QEntity* _rootEntity);
+                const QColor& color);
 
 private:
   void addSphere();
