@@ -46,6 +46,8 @@ private:
   QAction* m_aboutQtAction{nullptr};
   QAction* m_aboutAction{nullptr};
 
+  QVector<Qt3DCore::QEntity*> m_biteObject;
+
 private Q_SLOTS:
   void showAbout();
   void showAboutQt();

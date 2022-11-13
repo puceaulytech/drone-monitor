@@ -53,7 +53,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
         this, "Open 3D Object", QDir::currentPath(), "Text files (*.txt)");
     if (targetFilename.isEmpty()) return;
 
-    m_view3d->drawFile(targetFilename);
+    m_biteObject = m_view3d->drawFile(targetFilename);
   });
 
   connect(m_commands, &Commands::stopDrone, this, [=]() {
@@ -66,6 +66,8 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
 
   connect(m_commands, &Commands::autoDestruction, this, [=]() {
     m_logViewer->printLog("KABOOM");
+
+    for (auto object : m_biteObject) delete object;
   });
 }
 

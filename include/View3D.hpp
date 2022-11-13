@@ -13,9 +13,10 @@ class View3D : public Qt3DExtras::Qt3DWindow {
 
 public:
   View3D();
-  void drawFile(const QString& path);
-  void drawLine(const QVector3D& start, const QVector3D& end,
-                const QColor& color);
+
+  QVector<Qt3DCore::QEntity*> drawFile(const QString& path);
+  Qt3DCore::QEntity* drawLine(const QVector3D& start, const QVector3D& end,
+                              const QColor& color);
 
 private:
   void addSphere();

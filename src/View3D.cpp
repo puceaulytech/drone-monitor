@@ -33,8 +33,8 @@ View3D::View3D() {
   drawLine({0, 0, 0}, {0, 0, 20}, Qt::blue);
 }
 
-void View3D::drawLine(const QVector3D& start, const QVector3D& end,
-                      const QColor& color) {
+Qt3DCore::QEntity* View3D::drawLine(const QVector3D& start,
+                                    const QVector3D& end, const QColor& color) {
   auto* geometry = new Qt3DCore::QGeometry(m_rootEntity);
 
   QByteArray bufferBytes;
@@ -89,14 +89,17 @@ void View3D::drawLine(const QVector3D& start, const QVector3D& end,
   auto* lineEntity = new Qt3DCore::QEntity(m_rootEntity);
   lineEntity->addComponent(line);
   lineEntity->addComponent(material);
+
+  return lineEntity;
 }
 
-void View3D::drawFile(const QString& path) {
+QVector<Qt3DCore::QEntity*> View3D::drawFile(const QString& path) {
+  QVector<Qt3DCore::QEntity*> entities;
   QFile toDraw(path);
   if (!toDraw.open(QIODevice::ReadOnly)) {
     QMessageBox::critical(nullptr, "File not found",
                           "Cannot find specified file");
-    return;
+    return entities;
   }
   int index = 0;
   QTextStream in(&toDraw);
@@ -107,16 +110,20 @@ void View3D::drawFile(const QString& path) {
     QStringList fields = line.split(" ");
 
     if (index != 0) {
-      drawLine(QVector3D(old[0].toFloat(), old[1].toFloat(), old[2].toFloat()),
-               QVector3D(fields[0].toFloat(), fields[1].toFloat(),
-                         fields[2].toFloat()),
-               QColor(abs(old[2].toFloat()) * 255, 255, 255));
+      auto currentEntity = drawLine(
+          QVector3D(old[0].toFloat(), old[1].toFloat(), old[2].toFloat()),
+          QVector3D(fields[0].toFloat(), fields[1].toFloat(),
+                    fields[2].toFloat()),
+          QColor(abs(old[2].toFloat()) * 255, 255, 255));
+      entities.append(currentEntity);
     }
     old = fields;
     index++;
   }
 
   toDraw.close();
+
+  return entities;
 }
 
 void View3D::addSphere() {
