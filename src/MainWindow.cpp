@@ -99,10 +99,10 @@ void MainWindow::showAboutQt() {
 }
 
 void MainWindow::setupToolbar() {
-  QPixmap newpix(":/images/save.png");
-
+  QPixmap draw(":/images/draw.png");
+  QPixmap center(":/images/center.png");
   m_toolbar = addToolBar("Gorgeous toolbar");
-  auto* drawfile = m_toolbar->addAction(QIcon(newpix), "Draw File");
+  auto* drawfile = m_toolbar->addAction(QIcon(draw), "Draw File");
 
   connect(drawfile, &QAction::triggered, m_view3d, [=] {
     auto targetFilename = QFileDialog::getOpenFileName(
@@ -113,4 +113,9 @@ void MainWindow::setupToolbar() {
   });
 
   m_toolbar->addSeparator();
+  auto* centercam = m_toolbar->addAction(QIcon(center), "Center Camera");
+  connect(centercam,&QAction::triggered, this, [=]() {
+    m_logViewer->printLog("Centering the camera");
+    m_view3d->centerCamera();
+  });
 }
