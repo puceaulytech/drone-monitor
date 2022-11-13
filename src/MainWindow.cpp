@@ -68,6 +68,8 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
     m_logViewer->printLog("KABOOM");
 
     for (auto object : m_biteObject) delete object;
+
+    m_biteObject.clear();
   });
 }
 
