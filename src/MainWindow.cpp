@@ -60,6 +60,8 @@ void MainWindow::setupMenus() {
   m_timerMenu = new QMenu("Refresh Rate");
   m_helpMenu->insertActions(nullptr, {m_aboutQtAction, m_aboutAction});
   m_settingsMenu->insertMenu(nullptr, m_timerMenu);
+  m_timerMenu->insertActions(nullptr, {m_refreshTen, m_refreshFifty,
+                                       m_refreshHundred, m_refreshThousand});
 }
 
 void MainWindow::setupActions() {
@@ -68,6 +70,11 @@ void MainWindow::setupActions() {
 
   m_aboutAction = new QAction(tr("&About"), this);
   connect(m_aboutAction, &QAction::triggered, this, &MainWindow::showAbout);
+
+  m_refreshTen = new QAction(tr("10 ms"));
+  m_refreshFifty = new QAction(tr("50 ms"));
+  m_refreshHundred = new QAction(tr("100 ms"));
+  m_refreshThousand = new QAction(tr("1000 ms"));
 }
 
 void MainWindow::showAbout() {
@@ -108,6 +115,17 @@ void MainWindow::setupTimer() {
   m_refreshRate = 1000;
   m_mainTimer = new QTimer;
   m_mainTimer->setInterval(m_refreshRate);
-
+  connect(m_refreshTen, &QAction::triggered, this, [=] {
+    m_refreshRate = 10;
+  });
+  connect(m_refreshFifty, &QAction::triggered, this, [=] {
+    m_refreshRate = 50;
+  });
+  connect(m_refreshHundred, &QAction::triggered, this, [=] {
+    m_refreshRate = 100;
+  });
+  connect(m_refreshThousand, &QAction::triggered, this, [=] {
+    m_refreshRate = 1000;
+  });
   m_mainTimer->start();
 }
