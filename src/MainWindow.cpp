@@ -114,7 +114,8 @@ void MainWindow::setupToolbar() {
 
   m_toolbar->addSeparator();
   auto* centercam = m_toolbar->addAction(QIcon(center), "Center Camera");
-  connect(centercam,&QAction::triggered, this, [=]() {
+
+  connect(centercam, &QAction::triggered, this, [=]() {
     m_logViewer->printLog("Centering the camera");
     m_view3d->centerCamera();
   });
