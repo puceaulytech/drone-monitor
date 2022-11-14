@@ -47,12 +47,6 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
   // Commands
   connect(m_commands, &Commands::startDrone, this, [=]() {
     m_logViewer->printLog("DRAWING THE THING");
-
-    auto targetFilename = QFileDialog::getOpenFileName(
-        this, "Open 3D Object", QDir::currentPath(), "Text files (*.txt)");
-    if (targetFilename.isEmpty()) return;
-
-    m_biteObject = m_view3d->drawFile(targetFilename);
   });
 
   connect(m_commands, &Commands::stopDrone, this, [=]() {
@@ -101,10 +95,12 @@ void MainWindow::showAboutQt() {
 void MainWindow::setupToolbar() {
   QPixmap draw(":/images/draw.png");
   QPixmap center(":/images/center.png");
-  m_toolbar = addToolBar("Gorgeous toolbar");
-  auto* drawfile = m_toolbar->addAction(QIcon(draw), "Draw File");
 
-  connect(drawfile, &QAction::triggered, m_view3d, [=] {
+  m_toolbar = addToolBar("Gorgeous toolbar");
+
+  m_drawFileAction = m_toolbar->addAction(QIcon(draw), "Draw File");
+
+  connect(m_drawFileAction, &QAction::triggered, this, [=] {
     auto targetFilename = QFileDialog::getOpenFileName(
         this, "Open 3D Object", QDir::currentPath(), "Text files (*.txt)");
     if (targetFilename.isEmpty()) return;
@@ -113,9 +109,9 @@ void MainWindow::setupToolbar() {
   });
 
   m_toolbar->addSeparator();
-  auto* centercam = m_toolbar->addAction(QIcon(center), "Center Camera");
+  m_centerCamAction = m_toolbar->addAction(QIcon(center), "Center Camera");
 
-  connect(centercam, &QAction::triggered, this, [=]() {
+  connect(m_centerCamAction, &QAction::triggered, this, [=]() {
     m_logViewer->printLog("Centering the camera");
     m_view3d->centerCamera();
   });

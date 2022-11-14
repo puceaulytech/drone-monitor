@@ -50,6 +50,9 @@ private:
   // Actions
   QAction* m_aboutQtAction{nullptr};
   QAction* m_aboutAction{nullptr};
+  QAction* m_drawFileAction{nullptr};
+  QAction* m_centerCamAction{nullptr};
+
   QToolBar* m_toolbar;
   QVector<Qt3DCore::QEntity*> m_biteObject;
 
