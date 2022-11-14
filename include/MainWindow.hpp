@@ -35,6 +35,8 @@ private:
    * Setup toolbar
    */
   void setupToolbar();
+  // Timer initialization
+  void setupTimer();
 
   QGridLayout* m_mainLayout{nullptr};
   QWidget* m_mainWidget{nullptr};
@@ -46,6 +48,8 @@ private:
   // Menus
   QMenu* m_viewMenu{nullptr};
   QMenu* m_helpMenu{nullptr};
+  QMenu* m_settingsMenu{nullptr};
+  QMenu* m_timerMenu{nullptr};
 
   // Actions
   QAction* m_aboutQtAction{nullptr};
@@ -55,7 +59,8 @@ private:
 
   QToolBar* m_toolbar;
   QVector<Qt3DCore::QEntity*> m_biteObject;
-
+  QTimer* m_mainTimer{nullptr};
+  int m_refreshRate;
 private Q_SLOTS:
   void showAbout();
   void showAboutQt();
