@@ -97,7 +97,7 @@ void MainWindow::setupToolbar() {
   QPixmap draw(":/images/draw.png");
   QPixmap center(":/images/center.png");
 
-  m_toolbar = addToolBar("Gorgeous toolbar");
+  m_toolbar = addToolBar("Toolbar");
 
   m_drawFileAction = m_toolbar->addAction(QIcon(draw), "Draw File");
 
