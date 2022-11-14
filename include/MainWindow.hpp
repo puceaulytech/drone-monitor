@@ -57,10 +57,7 @@ private:
   QAction* m_drawFileAction{nullptr};
   QAction* m_centerCamAction{nullptr};
   // Refresh Rates
-  QAction* m_refreshTen;
-  QAction* m_refreshFifty;
-  QAction* m_refreshHundred;
-  QAction* m_refreshThousand;
+  QVector<QPair<int, QAction*>> m_refreshActions;
 
   QToolBar* m_toolbar;
   QVector<Qt3DCore::QEntity*> m_biteObject;
