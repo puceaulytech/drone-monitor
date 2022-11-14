@@ -57,3 +57,12 @@ qt_generate_deploy_app_script(
 )
 
 install(SCRIPT ${deploy_script})
+
+set(PACKAGE_NAME "Drone Monitor")
+
+set(CPACK_PACKAGE_VENDOR "Romain Chardiny and Robin Perdreau ")
+set(CPACK_PACKAGE_INSTALL_DIRECTORY "drone-monitor")
+set(CPACK_NSIS_DISPLAY_NAME ${PACKAGE_NAME})
+set(CPACK_NSIS_PACKAGE_NAME ${PACKAGE_NAME})
+
+include(CPack)
