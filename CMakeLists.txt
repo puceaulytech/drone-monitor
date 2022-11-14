@@ -45,9 +45,15 @@ set_target_properties(drone-monitor PROPERTIES
     MACOSX_BUNDLE ON
 )
 
+include(GNUInstallDirs)
+
 install(TARGETS drone-monitor
     BUNDLE  DESTINATION .
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+)
+
+install(FILES LICENSE
+    DESTINATION ${CMAKE_INSTALL_DOCDIR}
 )
 
 qt_generate_deploy_app_script(
