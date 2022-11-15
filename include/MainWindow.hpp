@@ -14,6 +14,7 @@
 #include <QToolBar>
 #include <QWidget>
 #include <View3D.hpp>
+#include <SerialMenu.hpp>
 
 class MainWindow : public QMainWindow {
   Q_OBJECT
@@ -49,7 +50,9 @@ private:
   QMenu* m_viewMenu{nullptr};
   QMenu* m_helpMenu{nullptr};
   QMenu* m_settingsMenu{nullptr};
+  // In the settings menu
   QMenu* m_timerMenu{nullptr};
+  QMenu* m_serialMenu{nullptr};
 
   // Actions
   QAction* m_aboutQtAction{nullptr};

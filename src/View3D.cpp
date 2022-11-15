@@ -51,7 +51,7 @@ Qt3DCore::QEntity* View3D::drawLine(const QVector3D& start,
 
   QByteArray bufferBytes;
   bufferBytes.resize(3 * 2 * sizeof(float));
-  float* positions = reinterpret_cast<float*>(bufferBytes.data());
+  auto* positions = reinterpret_cast<float*>(bufferBytes.data());
 
   *positions++ = start.x();
   *positions++ = start.y();
@@ -77,7 +77,7 @@ Qt3DCore::QEntity* View3D::drawLine(const QVector3D& start,
 
   QByteArray indexBytes;
   indexBytes.resize(2 * sizeof(unsigned int));
-  unsigned int* indices = reinterpret_cast<unsigned int*>(indexBytes.data());
+  auto* indices = reinterpret_cast<unsigned int*>(indexBytes.data());
   *indices++ = 0;
   *indices++ = 1;
 

@@ -58,8 +58,11 @@ void MainWindow::setupMenus() {
   m_helpMenu = menuBar()->addMenu(tr("&Help"));
 
   m_timerMenu = new QMenu("Refresh Rate");
+  m_serialMenu = new SerialMenu("Port");
+
   m_helpMenu->insertActions(nullptr, {m_aboutQtAction, m_aboutAction});
   m_settingsMenu->insertMenu(nullptr, m_timerMenu);
+  m_settingsMenu->insertMenu(nullptr, m_serialMenu);
 
   QAction* previous = nullptr;
   for (const auto& refreshAction : m_refreshActions) {

@@ -16,6 +16,7 @@ find_package(Qt6 REQUIRED COMPONENTS
     3DExtras
     3DAnimation
     Network
+    SerialPort
 )
 qt_standard_project_setup()
 
@@ -38,6 +39,7 @@ target_link_libraries(drone-monitor PRIVATE
     Qt6::3DExtras
     Qt6::Network
     Qt6::3DAnimation
+    Qt6::SerialPort
 )
 
 set_target_properties(drone-monitor PROPERTIES
