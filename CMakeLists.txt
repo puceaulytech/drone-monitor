@@ -79,6 +79,6 @@ set(CPACK_NSIS_PACKAGE_NAME ${PACKAGE_NAME})
 set(CPACK_NSIS_MANIFEST_DPI_AWARE ON)
 
 set(CPACK_DEBIAN_PACKAGE_ARCHITECTURE "amd64")
-set(CPACK_DEBIAN_PACKAGE_DEPENDS "libqt6widgets6, libqt63dcore6, libqt63dextras6, libqt63dinput6, libqt63drender6, libqt63danimation6, libqt6network6")
+set(CPACK_DEBIAN_PACKAGE_DEPENDS "libqt6widgets6, libqt63dcore6, libqt63dextras6, libqt63dinput6, libqt63drender6, libqt63danimation6, libqt6network6, libqt6serialport6")
 
 include(CPack)
