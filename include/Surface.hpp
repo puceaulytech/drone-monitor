@@ -3,7 +3,10 @@
 
 #include <Q3DSurface>
 #include <QDebug>
+#include <QFile>
+#include <QFileDialog>
 #include <QLinearGradient>
+#include <QMessageBox>
 #include <QSurface>
 #include <QVector3D>
 #include <QWidget>
@@ -13,10 +16,16 @@ class Surface : public Q3DSurface {
 
 public:
   Surface();
+  QSurfaceDataArray* parseFileToArray(QString path);
 
 private:
-  int m_min;
-  int m_max;
+  int m_sizeX;
+  int m_sizeY;
+  int m_undefined;
+  int m_xll;
+  int m_yll;
+  int m_resolution;
+  void initFromFileHeader(QString path);
   QSurfaceDataArray* m_mainArray;
   QSurfaceDataArray* setupArray();
 };
