@@ -1,6 +1,7 @@
 #include <SerialMenu.hpp>
 
-SerialMenu::SerialMenu(const QString& title, QWidget* parent) : QMenu(title, parent), m_serialPort()  {
+SerialMenu::SerialMenu(const QString& title, QWidget* parent)
+    : QMenu(title, parent), m_serialPort() {
   m_actionGroup = new QActionGroup(this);
   connect(this, &SerialMenu::aboutToShow, this, &SerialMenu::refreshPorts);
 }
@@ -11,6 +12,13 @@ void SerialMenu::refreshPorts() {
   auto availablePorts = QSerialPortInfo::availablePorts();
 
   QAction* previous = nullptr;
+
+  if (availablePorts.empty()) {
+    auto* noPortAction = new QAction("No port available");
+    noPortAction->setDisabled(true);
+    insertActions(nullptr, {noPortAction});
+    return;
+  }
 
   for (const auto& portInfo : availablePorts) {
     auto* portAction = new QAction(portInfo.portName());

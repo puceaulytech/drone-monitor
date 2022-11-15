@@ -8,6 +8,7 @@
 #include <Qt3DCore>
 #include <Qt3DExtras>
 #include <Qt3DRender>
+
 class View3D : public Qt3DExtras::Qt3DWindow {
   Q_OBJECT
 

@@ -6,7 +6,7 @@ int main(int argc, char** argv) {
   qputenv("QT3D_RENDERER", "opengl");
   QApplication app(argc, argv);
 
-#ifdef _WIN32
+#ifdef WIN32
   QApplication::setStyle(QStyleFactory::create("Fusion"));
   QFile file(":/darkorange.stylesheet");
   file.open(QFile::ReadOnly);
