@@ -57,18 +57,13 @@ void MainWindow::setupMenus() {
   m_settingsMenu = menuBar()->addMenu(tr("&Settings"));
   m_helpMenu = menuBar()->addMenu(tr("&Help"));
 
-  m_timerMenu = new QMenu("Refresh Rate");
   m_serialMenu = new SerialMenu("Port");
+  m_refreshRateMenu = new RefreshRateMenu("Refresh Rate");
 
   m_helpMenu->insertActions(nullptr, {m_aboutQtAction, m_aboutAction});
-  m_settingsMenu->insertMenu(nullptr, m_timerMenu);
+  m_settingsMenu->insertMenu(nullptr, m_refreshRateMenu);
   m_settingsMenu->insertMenu(nullptr, m_serialMenu);
 
-  QAction* previous = nullptr;
-  for (const auto& refreshAction : m_refreshActions) {
-    m_timerMenu->insertAction(previous, refreshAction.second);
-    previous = refreshAction.second;
-  }
 }
 
 void MainWindow::setupActions() {
@@ -77,13 +72,6 @@ void MainWindow::setupActions() {
 
   m_aboutAction = new QAction(tr("&About"), this);
   connect(m_aboutAction, &QAction::triggered, this, &MainWindow::showAbout);
-
-  QVector<int> initialRefreshRates = {1000, 100, 50, 10};
-
-  for (auto targetRefreshRate : initialRefreshRates)
-    m_refreshActions.append(
-        qMakePair(targetRefreshRate,
-                  new QAction(QString::number(targetRefreshRate) + " ms")));
 }
 
 void MainWindow::showAbout() {
@@ -121,14 +109,9 @@ void MainWindow::setupToolbar() {
   });
 }
 void MainWindow::setupTimer() {
-  m_refreshRate = 1000;
+  m_refreshRateMenu->refreshRate = 1000;
   m_mainTimer = new QTimer;
-  m_mainTimer->setInterval(m_refreshRate);
-
-  for (const auto& refreshAction : m_refreshActions)
-    connect(refreshAction.second, &QAction::triggered, this, [=] {
-      m_refreshRate = refreshAction.first;
-    });
+  m_mainTimer->setInterval(m_refreshRateMenu->refreshRate);
 
   m_mainTimer->start();
 }

@@ -15,6 +15,7 @@
 #include <QWidget>
 #include <View3D.hpp>
 #include <SerialMenu.hpp>
+#include <RefreshRateMenu.hpp>
 
 class MainWindow : public QMainWindow {
   Q_OBJECT
@@ -51,8 +52,8 @@ private:
   QMenu* m_helpMenu{nullptr};
   QMenu* m_settingsMenu{nullptr};
   // In the settings menu
-  QMenu* m_timerMenu{nullptr};
-  QMenu* m_serialMenu{nullptr};
+  SerialMenu* m_serialMenu{nullptr};
+  RefreshRateMenu* m_refreshRateMenu{nullptr};
 
   // Actions
   QAction* m_aboutQtAction{nullptr};
@@ -60,12 +61,10 @@ private:
   QAction* m_drawFileAction{nullptr};
   QAction* m_centerCamAction{nullptr};
   // Refresh Rates
-  QVector<QPair<int, QAction*>> m_refreshActions;
 
   QToolBar* m_toolbar;
   QVector<Qt3DCore::QEntity*> m_biteObject;
   QTimer* m_mainTimer{nullptr};
-  int m_refreshRate;
 private Q_SLOTS:
   void showAbout();
   void showAboutQt();
