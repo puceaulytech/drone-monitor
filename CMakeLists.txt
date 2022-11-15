@@ -7,6 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_AUTORCC ON)
 
+
 find_package(Qt6 REQUIRED COMPONENTS
     Widgets
     3DCore
@@ -16,6 +17,7 @@ find_package(Qt6 REQUIRED COMPONENTS
     3DExtras
     3DAnimation
     Network
+    DataVisualization
 )
 qt_standard_project_setup()
 
@@ -31,6 +33,7 @@ add_executable(drone-monitor
 include_directories(include)
 
 target_link_libraries(drone-monitor PRIVATE
+    Qt6::DataVisualization
     Qt6::Widgets
     Qt6::3DCore
     Qt6::3DRender

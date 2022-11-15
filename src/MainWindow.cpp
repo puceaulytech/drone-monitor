@@ -39,6 +39,14 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
   addDockWidget(Qt::BottomDockWidgetArea, logDockWidget);
   m_viewMenu->addAction(logDockWidget->toggleViewAction());
 
+  m_geoSurface = new Surface;
+  m_geoViewer = QWidget::createWindowContainer(m_geoSurface);
+  auto* geoDockWidget = new QDockWidget("Geo Viewer");
+  geoDockWidget->setWidget(m_geoViewer);
+  addDockWidget(Qt::LeftDockWidgetArea, geoDockWidget);
+  m_viewMenu->addAction(geoDockWidget->toggleViewAction());
+  m_geoSurface->show();
+
   m_logViewer->printLog("Starting Drone Monitor...");
 
   // Commands

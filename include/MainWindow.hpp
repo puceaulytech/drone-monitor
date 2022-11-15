@@ -5,6 +5,7 @@
 
 #include <Commands.hpp>
 #include <LogViewer.hpp>
+#include <Q3DSurface>
 #include <QAction>
 #include <QGridLayout>
 #include <QMainWindow>
@@ -13,8 +14,8 @@
 #include <QTimer>
 #include <QToolBar>
 #include <QWidget>
+#include <Surface.hpp>
 #include <View3D.hpp>
-
 class MainWindow : public QMainWindow {
   Q_OBJECT
 
@@ -40,11 +41,12 @@ private:
 
   QGridLayout* m_mainLayout{nullptr};
   QWidget* m_mainWidget{nullptr};
-
+  QWidget* m_geoViewer;
   LogViewer* m_logViewer{nullptr};
   Commands* m_commands{nullptr};
   View3D* m_view3d{nullptr};
 
+  Surface* m_geoSurface;
   // Menus
   QMenu* m_viewMenu{nullptr};
   QMenu* m_helpMenu{nullptr};
