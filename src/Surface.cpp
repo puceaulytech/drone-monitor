@@ -71,7 +71,7 @@ QSurfaceDataArray* Surface::parseFileToArray(QString path) {
   qInfo() << "step :" << step;
   for (int i = 0; i < m_sizeX; i++) {
     m_value = i;
-    update();
+    emit update();
     QString line = in.readLine();
     QStringList fields = line.split(" ");
     double x = i * step;
