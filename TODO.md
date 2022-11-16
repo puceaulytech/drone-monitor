@@ -1,3 +1,5 @@
 # TODO
 
-1. `drawLine` should return the geometry of the line to be able to delete it later
+1.  alors deja la map est en verlant complet
+2. ensuite faut pouvoir voir l'avion (3dcustomobject je crois)
+3. le ptn de point faut pouvoir reduire sa taille

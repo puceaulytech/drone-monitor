@@ -4,11 +4,11 @@ Surface::Surface() {
   // setFlags(flags() ^ Qt::FramelessWindowHint);
   shower = new QProgressDialog;
   shower->setMinimum(0);
-  shower->setMaximum(999);
+  shower->setMaximum(5998);
   shower->setModal(true);
   shower->setValue(shower->minimum());
   connect(this, &Surface::update, this, &Surface::updateValue);
-  setAspectRatio(15);
+  setAspectRatio(50);
   m_mainArray = parseFileToArray(QString(""));
   QSurface3DSeries* series = new QSurface3DSeries;
   series->setDrawMode(QSurface3DSeries::DrawSurface);
@@ -17,10 +17,10 @@ Surface::Surface() {
   activeTheme()->setBackgroundColor(QColor(0, 0, 0));
   activeTheme()->setWindowColor(QColor(0, 0, 0));
   QLinearGradient gr;
-  gr.setColorAt(0.0, Qt::black);
-  gr.setColorAt(0.33, Qt::blue);
-  gr.setColorAt(0.67, Qt::red);
-  gr.setColorAt(1000, Qt::yellow);
+  gr.setColorAt(0.002, Qt::black);
+  gr.setColorAt(0.01, Qt::green);
+  gr.setColorAt(0.5, Qt::yellow);
+  gr.setColorAt(1, Qt::red);
   seriesList().at(0)->setBaseGradient(gr);
   seriesList().at(0)->setColorStyle(Q3DTheme::ColorStyleRangeGradient);
   scene()->activeCamera()->setMaxZoomLevel(5000.0f);
@@ -63,8 +63,8 @@ QSurfaceDataArray* Surface::parseFileToArray(QString path) {
     QString line = in.readLine();
   };
   double heightMultiplier = 1;
-  m_sizeX = 1000;  // 5999
-  m_sizeY = 1000;
+  m_sizeX = 5999;  // 5999
+  m_sizeY = 5999;
 
   double step =
       static_cast<double>(m_resolution) / static_cast<double>(m_sizeX);
