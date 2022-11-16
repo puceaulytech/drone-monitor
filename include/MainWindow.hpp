@@ -7,6 +7,7 @@
 #include <LogViewer.hpp>
 #include <Q3DSurface>
 #include <QAction>
+#include <QDebug>
 #include <QGridLayout>
 #include <QMainWindow>
 #include <QMenu>

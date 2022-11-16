@@ -25,10 +25,16 @@ private:
   int m_undefined;
   int m_xll;
   int m_yll;
+  int m_value;
   int m_resolution;
   void initFromFileHeader(QString path);
   QSurfaceDataArray* m_mainArray;
   QSurfaceDataArray* setupArray();
+
+Q_SIGNALS:
+  void update();
+public Q_SLOTS:
+  void updateValue();
 };
 
 #endif  // SURFACE_HPP

@@ -41,14 +41,6 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
 
   m_logViewer->printLog("Starting Drone Monitor...");
 
-  m_geoSurface = new Surface;
-  m_geoViewer = QWidget::createWindowContainer(m_geoSurface);
-  auto* geoDockWidget = new QDockWidget("Geo Viewer");
-  geoDockWidget->setWidget(m_geoViewer);
-  addDockWidget(Qt::LeftDockWidgetArea, geoDockWidget);
-  m_viewMenu->addAction(geoDockWidget->toggleViewAction());
-  m_geoSurface->show();
-
   // Commands
 
   connect(m_commands, &Commands::autoDestruction, this, [=]() {
@@ -124,11 +116,17 @@ void MainWindow::setupToolbar() {
     m_logViewer->printLog("Centering the camera");
     m_view3d->centerCamera();
   });
-  /*
-    m_loadAscii = m_toolbar->addAction(QIcon(ez), "Load Ascii");
-    connect(m_loadAscii, &QAction::triggered, this, [=]() {
 
-    });*/
+  m_loadAscii = m_toolbar->addAction(QIcon(ez), "Load Ascii");
+  connect(m_loadAscii, &QAction::triggered, this, [=]() {
+    m_geoSurface = new Surface;
+    m_geoViewer = QWidget::createWindowContainer(m_geoSurface);
+    auto* geoDockWidget = new QDockWidget("Geo Viewer");
+    geoDockWidget->setWidget(m_geoViewer);
+    addDockWidget(Qt::LeftDockWidgetArea, geoDockWidget);
+    m_viewMenu->addAction(geoDockWidget->toggleViewAction());
+    m_geoSurface->show();
+  });
 }
 void MainWindow::setupTimer() {
   m_refreshRate = 1000;
