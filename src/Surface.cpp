@@ -2,12 +2,12 @@
 
 Surface::Surface() {
   // setFlags(flags() ^ Qt::FramelessWindowHint);
-  QProgressDialog shower;
-  shower.setMaximum(m_sizeX);
-  shower.setMinimum(0);
-  connect(this, &Surface::update, this,
-
-  );
+  shower = new QProgressDialog;
+  shower->setMinimum(0);
+  shower->setMaximum(999);
+  shower->setModal(true);
+  shower->setValue(shower->minimum());
+  connect(this, &Surface::update, this, &Surface::updateValue);
   setAspectRatio(15);
   m_mainArray = parseFileToArray(QString(""));
   QSurface3DSeries* series = new QSurface3DSeries;
@@ -70,8 +70,7 @@ QSurfaceDataArray* Surface::parseFileToArray(QString path) {
       static_cast<double>(m_resolution) / static_cast<double>(m_sizeX);
   qInfo() << "step :" << step;
   for (int i = 0; i < m_sizeX; i++) {
-    m_value = i;
-    emit update();
+    emit update(i);
     QString line = in.readLine();
     QStringList fields = line.split(" ");
     double x = i * step;
@@ -132,5 +131,6 @@ void Surface::initFromFileHeader(QString path) {
   file.close();
 }
 void Surface::updateValue(int i) {
-  shower.setValue(i);
+  shower->setValue(i);
+  qInfo() << shower->value();
 }

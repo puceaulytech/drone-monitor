@@ -27,14 +27,15 @@ private:
   int m_yll;
   int m_value;
   int m_resolution;
+  QProgressDialog* shower;
   void initFromFileHeader(QString path);
   QSurfaceDataArray* m_mainArray;
   QSurfaceDataArray* setupArray();
 
 Q_SIGNALS:
-  void update();
+  void update(int i);
 public Q_SLOTS:
-  void updateValue();
+  void updateValue(int i);
 };
 
 #endif  // SURFACE_HPP
