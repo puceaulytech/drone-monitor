@@ -46,7 +46,7 @@ private:
   Commands* m_commands{nullptr};
   View3D* m_view3d{nullptr};
 
-  Surface* m_geoSurface;
+  Surface* m_geoSurface{nullptr};
   // Menus
   QMenu* m_viewMenu{nullptr};
   QMenu* m_helpMenu{nullptr};
@@ -58,6 +58,7 @@ private:
   QAction* m_aboutAction{nullptr};
   QAction* m_drawFileAction{nullptr};
   QAction* m_centerCamAction{nullptr};
+  QAction* m_loadAscii;
   // Refresh Rates
   QVector<QPair<int, QAction*>> m_refreshActions;
 

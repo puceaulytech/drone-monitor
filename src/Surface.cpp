@@ -38,18 +38,21 @@ QSurfaceDataArray* Surface::setupArray() {
 
 QSurfaceDataArray* Surface::parseFileToArray(QString path) {
   auto* data = new QSurfaceDataArray;
-  initFromFileHeader(path);
+  QProgressDialog shower;
+
   if (path == "") {
     path = QFileDialog::getOpenFileName(
         nullptr, "Open 3D Object", QDir::currentPath(), "Text files (*.asc)");
   }
+  initFromFileHeader(path);
   QFile file(path);
   if (!file.open(QIODevice::ReadOnly)) {
     QMessageBox::critical(nullptr, "File not found",
                           "Cannot find specified file");
     return data;
   }
-
+  // alors ca c'est un point de methode : bien observer le domaine
+  // d'integrabilité et combien d'integrales il faut considerer
   QTextStream in(&file);
   for (int k = 0; k < 7; k++) {
     QString line = in.readLine();
@@ -57,12 +60,13 @@ QSurfaceDataArray* Surface::parseFileToArray(QString path) {
   double heightMultiplier = 1;
   m_sizeX = 1000;  // 5999
   m_sizeY = 1000;
+  shower.setMaximum(m_sizeX);
+  shower.setMinimum(0);
   double step =
       static_cast<double>(m_resolution) / static_cast<double>(m_sizeX);
   qInfo() << "step :" << step;
   for (int i = 0; i < m_sizeX; i++) {
-    qInfo() << "done %"
-            << (static_cast<float>(i) / static_cast<float>(m_sizeX)) * 100;
+    shower.setValue(i);
     QString line = in.readLine();
     QStringList fields = line.split(" ");
     double x = i * step;
@@ -78,15 +82,12 @@ QSurfaceDataArray* Surface::parseFileToArray(QString path) {
       (*row)[j].setPosition(QVector3D(z, heightMultiplier * y, x));
     }
     *data << row;
+    // free(row);
   }
   return data;
 }
 
 void Surface::initFromFileHeader(QString path) {
-  if (path == "") {
-    path = QFileDialog::getOpenFileName(
-        nullptr, "Open 3D Object", QDir::currentPath(), "Text files (*.asc)");
-  }
   QFile file(path);
   if (!file.open(QIODevice::ReadOnly)) {
     QMessageBox::critical(nullptr, "File not found",

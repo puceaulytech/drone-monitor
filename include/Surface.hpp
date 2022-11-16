@@ -7,6 +7,7 @@
 #include <QFileDialog>
 #include <QLinearGradient>
 #include <QMessageBox>
+#include <QProgressDialog>
 #include <QSurface>
 #include <QVector3D>
 #include <QWidget>
