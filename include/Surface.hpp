@@ -27,7 +27,7 @@ private:
   int m_sizeY;
   int m_undefined;
   int m_xll;
-  int m_cellsize;
+  float m_cellsize;
   int m_yll;
   int m_value;
   int m_resolution;

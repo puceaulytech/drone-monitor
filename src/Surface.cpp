@@ -122,7 +122,7 @@ void Surface::initFromFileHeader(QString path) {
   fields = line.split(" ");
 
   m_cellsize = fields[6].toFloat();
-  m_resolution = qFloor((m_sizeX * m_cellsize) + 0.5);
+  m_resolution = qFloor((static_cast<float>(m_sizeX) * m_cellsize) + 0.5);
   line = in.readLine();
   fields = line.split(" ");
   m_undefined = fields[2].toInt();
