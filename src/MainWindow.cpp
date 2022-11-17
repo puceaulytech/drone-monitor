@@ -119,7 +119,7 @@ void MainWindow::setupToolbar() {
 
   m_loadAscii = m_toolbar->addAction(QIcon(ez), "Load Ascii");
   connect(m_loadAscii, &QAction::triggered, this, [=]() {
-    m_geoSurface = new Surface;
+    m_geoSurface = new Surface(0, 0, 0);
     m_geoViewer = QWidget::createWindowContainer(m_geoSurface);
     auto* geoDockWidget = new QDockWidget("Geo Viewer");
     geoDockWidget->setWidget(m_geoViewer);

@@ -1,6 +1,6 @@
 #include <Surface.hpp>
 
-Surface::Surface() {
+Surface::Surface(float degX, float degY, float around) {
   // setFlags(flags() ^ Qt::FramelessWindowHint);
   shower = new QProgressDialog;
   shower->setMinimum(0);
@@ -8,7 +8,7 @@ Surface::Surface() {
   shower->setModal(true);
   shower->setValue(shower->minimum());
   connect(this, &Surface::update, this, &Surface::updateValue);
-  setAspectRatio(50);
+  setAspectRatio(40);  // 15 50
   m_mainArray = parseFileToArray(QString(""));
   QSurface3DSeries* series = new QSurface3DSeries;
   series->setDrawMode(QSurface3DSeries::DrawSurface);
@@ -75,13 +75,13 @@ QSurfaceDataArray* Surface::parseFileToArray(QString path) {
     QStringList fields = line.split(" ");
     double x = i * step;
     auto* row = new QSurfaceDataRow(m_sizeY);
-    for (int j = 0; j < m_sizeY; j++) {
+    for (int j = m_sizeY - 1; j >= 0; j--) {
       double z = j * step;
       int y;
-      if (fields[j].toDouble() == m_undefined) {
+      if (fields[m_sizeY - j].toDouble() == m_undefined) {
         y = 0;
       } else {
-        y = fields[j].toDouble();
+        y = fields[m_sizeY - j].toDouble();
       }
       (*row)[j].setPosition(QVector3D(z, heightMultiplier * y, x));
     }
@@ -120,9 +120,9 @@ void Surface::initFromFileHeader(QString path) {
   m_yll = fields[5].toInt();
   line = in.readLine();
   fields = line.split(" ");
-  double cellsize;
-  cellsize = fields[6].toFloat();
-  m_resolution = qFloor((m_sizeX * cellsize) + 0.5);
+
+  m_cellsize = fields[6].toFloat();
+  m_resolution = qFloor((m_sizeX * m_cellsize) + 0.5);
   line = in.readLine();
   fields = line.split(" ");
   m_undefined = fields[2].toInt();

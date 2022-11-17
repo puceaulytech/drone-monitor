@@ -16,14 +16,18 @@ class Surface : public Q3DSurface {
   Q_OBJECT
 
 public:
-  Surface();
+  Surface(float degX, float degY, float around);
   QSurfaceDataArray* parseFileToArray(QString path);
 
 private:
+  float m_degX;
+  float m_degY;
+  float m_around;
   int m_sizeX;
   int m_sizeY;
   int m_undefined;
   int m_xll;
+  int m_cellsize;
   int m_yll;
   int m_value;
   int m_resolution;
