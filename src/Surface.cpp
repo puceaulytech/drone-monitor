@@ -77,7 +77,7 @@ QSurfaceDataArray* Surface::parseFileToArray(QString path) {
   qInfo() << lowY << upY;
   // le cycle de carnot a un rendement plus important par rapport a tout les
   // autres cycles moteurs
-  m_resolution = qFloor((static_cast<float>(m_sizeX) * m_cellsize) + 0.5);
+
   double step =
       static_cast<double>(m_resolution) / static_cast<double>(m_sizeX);
   qInfo() << "step :" << step;
@@ -89,25 +89,28 @@ QSurfaceDataArray* Surface::parseFileToArray(QString path) {
     QStringList fields = line.split(" ");
 
     double x = i * step;
-    auto* row = new QSurfaceDataRow(m_sizeY);
-    for (int j = m_sizeY - 1; j >= 0; j--) {
-      // if same mais y
-      if (i >= lowY && i <= upY && j >= lowX && j <= upX) {
-        double z = j * step;
+    if (i >= lowY && i <= upY) {
+      auto* row = new QSurfaceDataRow(upX - lowX);
+      int index = 0;
+      for (int j = upY - 1; j >= lowY; j--) {
+        // if same mais y
+
+        double z = index * step;
         int y;
-        if (fields[m_sizeY - j].toDouble() == m_undefined) {
+        if (fields[upY - index].toDouble() == m_undefined) {
           y = 0;
         } else {
-          y = fields[m_sizeY - j].toDouble();
+          y = fields[upY - index].toDouble();
         }
-        (*row)[j].setPosition(QVector3D(m_degX - m_around + z, y,
-                                        m_degY - m_around + m_resolution + x));
+        (*row)[index].setPosition(QVector3D(
+            m_degX - m_around + z, y, m_degY - m_around + m_resolution + x));
+        index++;
       }
-    }
-    if (row->isEmpty() == false) {
+
       *data << row;
+
+      // free(row);
     }
-    // free(row);
   }
 
   return data;
