@@ -1,6 +1,6 @@
 #ifndef SURFACE_HPP
 #define SURFACE_HPP
-
+#include <Degres.hpp>
 #include <Q3DSurface>
 #include <QDebug>
 #include <QFile>

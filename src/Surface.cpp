@@ -2,6 +2,9 @@
 
 Surface::Surface(float degX, float degY, float around) {
   // setFlags(flags() ^ Qt::FramelessWindowHint);
+  m_degX = degX;
+  m_degY = degY;
+  m_around = around;
   shower = new QProgressDialog;
   shower->setMinimum(0);
   shower->setMaximum(5998);
@@ -60,33 +63,55 @@ QSurfaceDataArray* Surface::parseFileToArray(QString path) {
   // d'integrabilité et combien d'integrales il faut considerer
   QTextStream in(&file);
   for (int k = 0; k < 7; k++) {
-    QString line = in.readLine();
+    in.readLine();
   };
-  double heightMultiplier = 1;
+
   m_sizeX = 5999;  // 5999
   m_sizeY = 5999;
+
+  int lowX = floor((static_cast<double>((m_degX - m_around)) /
+                    static_cast<double>(m_cellsize)) +
+                   0.5);
+  int upX = floor((static_cast<double>((m_degX + m_around)) /
+                   static_cast<double>(m_cellsize)) +
+                  0.5);
+  int lowY = floor((static_cast<double>((m_degY - m_around)) /
+                    static_cast<double>(m_cellsize)) +
+                   0.5);
+  int upY = floor((static_cast<double>((m_degY + m_around)) /
+                   static_cast<double>(m_cellsize)) +
+                  0.5);
+  qInfo() << lowX << upX;
+  qInfo() << lowY << upY;
 
   double step =
       static_cast<double>(m_resolution) / static_cast<double>(m_sizeX);
   qInfo() << "step :" << step;
   for (int i = 0; i < m_sizeX; i++) {
     emit update(i);
-    QString line = in.readLine();
-    QStringList fields = line.split(" ");
-    double x = i * step;
-    auto* row = new QSurfaceDataRow(m_sizeY);
-    for (int j = m_sizeY - 1; j >= 0; j--) {
-      double z = j * step;
-      int y;
-      if (fields[m_sizeY - j].toDouble() == m_undefined) {
-        y = 0;
-      } else {
-        y = fields[m_sizeY - j].toDouble();
+    // if on est entre xmin et xmax de la surface qu'on veut dessiner
+    if (i >= lowX && i <= upX) {
+      QString line = in.readLine();
+      QStringList fields = line.split(" ");
+      double x = i * step;
+      auto* row = new QSurfaceDataRow(m_sizeY);
+      for (int j = m_sizeY - 1; j >= 0; j--) {
+        // if same mais y
+        if (j >= lowY && j <= upY) {
+          double z = j * step;
+          int y;
+          if (fields[m_sizeY - j].toDouble() == m_undefined) {
+            y = 0;
+          } else {
+            y = fields[m_sizeY - j].toDouble();
+          }
+          (*row)[j].setPosition(
+              QVector3D(lowX + z, y, lowY + m_resolution + x));
+        }
       }
-      (*row)[j].setPosition(QVector3D(z, heightMultiplier * y, x));
+      *data << row;
+      // free(row);
     }
-    *data << row;
-    // free(row);
   }
   return data;
 }
