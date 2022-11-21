@@ -69,50 +69,47 @@ QSurfaceDataArray* Surface::parseFileToArray(QString path) {
   m_sizeX = 5999;  // 5999
   m_sizeY = 5999;
 
-  int lowX = floor((static_cast<double>((m_degX - m_around)) /
-                    static_cast<double>(m_cellsize)) +
-                   0.5);
-  int upX = floor((static_cast<double>((m_degX + m_around)) /
-                   static_cast<double>(m_cellsize)) +
-                  0.5);
-  int lowY = floor((static_cast<double>((m_degY - m_around)) /
-                    static_cast<double>(m_cellsize)) +
-                   0.5);
-  int upY = floor((static_cast<double>((m_degY + m_around)) /
-                   static_cast<double>(m_cellsize)) +
-                  0.5);
+  int lowX = (m_degX - m_around - m_xll) * (1 / m_cellsize);
+  int upX = (m_degX + m_around - m_xll) / m_cellsize;
+  int lowY = (m_degY - m_around - m_yll) / m_cellsize;
+  int upY = (m_degY + m_around - m_yll) / m_cellsize;
   qInfo() << lowX << upX;
   qInfo() << lowY << upY;
-
+  // le cycle de carnot a un rendement plus important par rapport a tout les
+  // autres cycles moteurs
+  m_resolution = qFloor((static_cast<float>(m_sizeX) * m_cellsize) + 0.5);
   double step =
       static_cast<double>(m_resolution) / static_cast<double>(m_sizeX);
   qInfo() << "step :" << step;
   for (int i = 0; i < m_sizeX; i++) {
     emit update(i);
     // if on est entre xmin et xmax de la surface qu'on veut dessiner
-    if (i >= lowX && i <= upX) {
-      QString line = in.readLine();
-      QStringList fields = line.split(" ");
-      double x = i * step;
-      auto* row = new QSurfaceDataRow(m_sizeY);
-      for (int j = m_sizeY - 1; j >= 0; j--) {
-        // if same mais y
-        if (j >= lowY && j <= upY) {
-          double z = j * step;
-          int y;
-          if (fields[m_sizeY - j].toDouble() == m_undefined) {
-            y = 0;
-          } else {
-            y = fields[m_sizeY - j].toDouble();
-          }
-          (*row)[j].setPosition(
-              QVector3D(lowX + z, y, lowY + m_resolution + x));
+
+    QString line = in.readLine();
+    QStringList fields = line.split(" ");
+
+    double x = i * step;
+    auto* row = new QSurfaceDataRow(m_sizeY);
+    for (int j = m_sizeY - 1; j >= 0; j--) {
+      // if same mais y
+      if (i >= lowY && i <= upY && j >= lowX && j <= upX) {
+        double z = j * step;
+        int y;
+        if (fields[m_sizeY - j].toDouble() == m_undefined) {
+          y = 0;
+        } else {
+          y = fields[m_sizeY - j].toDouble();
         }
+        (*row)[j].setPosition(QVector3D(m_degX - m_around + z, y,
+                                        m_degY - m_around + m_resolution + x));
       }
-      *data << row;
-      // free(row);
     }
+    if (row->isEmpty() == false) {
+      *data << row;
+    }
+    // free(row);
   }
+
   return data;
 }
 
@@ -127,9 +124,7 @@ void Surface::initFromFileHeader(QString path) {
   QTextStream in(&file);
   QString line = in.readLine();
   QStringList fields = line.split(" ");
-  for (int i = 0; i < fields.length(); i++) {
-    qInfo() << i << "   " << fields[i];
-  }
+  for (int i = 0; i < fields.length(); i++) {}
   m_sizeX = fields[9].toInt();
 
   line = in.readLine();
@@ -151,8 +146,7 @@ void Surface::initFromFileHeader(QString path) {
   line = in.readLine();
   fields = line.split(" ");
   m_undefined = fields[2].toInt();
-  qInfo() << m_sizeX << m_sizeY << m_xll << m_yll << m_resolution
-          << m_undefined;
+  qInfo() << m_cellsize;
   file.close();
 }
 void Surface::updateValue(int i) {
