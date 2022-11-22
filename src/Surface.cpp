@@ -73,11 +73,11 @@ QSurfaceDataArray* Surface::parseFileToArray(QString path) {
   int upX = (m_degX + m_around - m_xll) / m_cellsize;
   int lowY = (m_degY - m_around - m_yll) / m_cellsize;
   int upY = (m_degY + m_around - m_yll) / m_cellsize;
-  qInfo() << lowX << upX;
+  qInfo() << lowX * m_cellsize << upX * m_cellsize;
   qInfo() << lowY << upY;
   // le cycle de carnot a un rendement plus important par rapport a tout les
   // autres cycles moteurs
-
+  m_resolution = qFloor((static_cast<float>(m_sizeX) * m_cellsize) + 0.5);
   double step =
       static_cast<double>(m_resolution) / static_cast<double>(m_sizeX);
   qInfo() << "step :" << step;
@@ -88,25 +88,30 @@ QSurfaceDataArray* Surface::parseFileToArray(QString path) {
     QString line = in.readLine();
     QStringList fields = line.split(" ");
 
-    double x = i * step;
-    if (i >= lowY && i <= upY) {
+    double z = (i)*step;
+
+    if (i >= lowX && i < upX) {
       auto* row = new QSurfaceDataRow(upX - lowX);
       int index = 0;
-      for (int j = upY - 1; j >= lowY; j--) {
+      for (int j = 0; j < upX - lowX; j++) {
         // if same mais y
 
-        double z = index * step;
+        double x = index * step;
         int y;
-        if (fields[upY - index].toDouble() == m_undefined) {
+        if (fields[lowX + index].toDouble() == m_undefined) {
           y = 0;
         } else {
-          y = fields[upY - index].toDouble();
+          y = fields[lowX + index].toDouble();
         }
-        (*row)[index].setPosition(QVector3D(
-            m_degX - m_around + z, y, m_degY - m_around + m_resolution + x));
+        (*row)[index].setPosition(
+            QVector3D(m_degX - m_around + x, y, m_degY - m_around + z));
+
         index++;
       }
-
+      // 43 - 1
+      // 42 + z
+      qInfo() << m_degY << m_around << z;
+      qInfo() << m_degY - m_around + z;
       *data << row;
 
       // free(row);
@@ -154,5 +159,5 @@ void Surface::initFromFileHeader(QString path) {
 }
 void Surface::updateValue(int i) {
   shower->setValue(i);
-  qInfo() << shower->value();
+  // qInfo() << shower->value();
 }
