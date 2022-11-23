@@ -30,7 +30,7 @@ private:
   float m_cellsize;
   int m_yll;
   int m_value;
-  int m_resolution;
+  float m_resolution;
   QProgressDialog* shower;
   void initFromFileHeader(QString path);
   QSurfaceDataArray* m_mainArray;

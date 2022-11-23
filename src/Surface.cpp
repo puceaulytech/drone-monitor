@@ -5,6 +5,7 @@ Surface::Surface(float degX, float degY, float around) {
   m_degX = degX;
   m_degY = degY;
   m_around = around;
+  axisZ()->setReversed(true);
   shower = new QProgressDialog;
   shower->setMinimum(0);
   shower->setMaximum(5998);
@@ -68,53 +69,56 @@ QSurfaceDataArray* Surface::parseFileToArray(QString path) {
 
   m_sizeX = 5999;  // 5999
   m_sizeY = 5999;
+  double step =
+      static_cast<double>(m_resolution) / static_cast<double>(m_sizeX);
+  int lowX = (m_degX - m_around - m_xll) * (1 / step);
+  int upX = (m_degX + m_around - m_xll) / step;
+  int lowY = (m_degY - m_around - m_yll) / step;
+  int upY = (m_degY + m_around - m_yll) / step;
 
-  int lowX = (m_degX - m_around - m_xll) * (1 / m_cellsize);
-  int upX = (m_degX + m_around - m_xll) / m_cellsize;
-  int lowY = (m_degY - m_around - m_yll) / m_cellsize;
-  int upY = (m_degY + m_around - m_yll) / m_cellsize;
   qInfo() << lowX * m_cellsize << upX * m_cellsize;
-  qInfo() << lowY << upY;
+  qInfo() << lowY * m_cellsize << upY * m_cellsize;
   // le cycle de carnot a un rendement plus important par rapport a tout les
   // autres cycles moteurs
   m_resolution = qFloor((static_cast<float>(m_sizeX) * m_cellsize) + 0.5);
-  double step =
-      static_cast<double>(m_resolution) / static_cast<double>(m_sizeX);
+
   qInfo() << "step :" << step;
-  for (int i = 0; i < m_sizeX; i++) {
+  double z;
+  double x;
+  qInfo() << "drawing from " << m_xll + lowX * m_cellsize << "to"
+          << m_xll + upX * m_cellsize;
+  for (int i = 0; i < m_sizeY; i++) {
     emit update(i);
     // if on est entre xmin et xmax de la surface qu'on veut dessiner
 
     QString line = in.readLine();
     QStringList fields = line.split(" ");
 
-    double z = (i)*step;
+    z = i * step;
 
-    if (i >= lowX && i < upX) {
+    if (i >= lowY /*- 2000* marche bien wtf */ && i < upY /*- 2000*/) {
       auto* row = new QSurfaceDataRow(upX - lowX);
       int index = 0;
-      for (int j = 0; j < upX - lowX; j++) {
+      for (int j = lowX; j < upX; j++) {
         // if same mais y
 
-        double x = index * step;
-        int y;
-        if (fields[lowX + index].toDouble() == m_undefined) {
+        x = j * step;
+        double y;
+        if (fields[j].toDouble() == m_undefined) {
           y = 0;
         } else {
-          y = fields[lowX + index].toDouble();
+          y = fields[j].toDouble();
         }
-        (*row)[index].setPosition(
-            QVector3D(m_degX - m_around + x, y, m_degY - m_around + z));
+        (*row)[index].setPosition(QVector3D(j, y, i));
 
         index++;
       }
       // 43 - 1
       // 42 + z
-      qInfo() << m_degY << m_around << z;
-      qInfo() << m_degY - m_around + z;
-      *data << row;
 
-      // free(row);
+      *data << row;
+      // data->prepend(row);
+      //   free(row);
     }
   }
 
@@ -154,7 +158,7 @@ void Surface::initFromFileHeader(QString path) {
   line = in.readLine();
   fields = line.split(" ");
   m_undefined = fields[2].toInt();
-  qInfo() << m_cellsize;
+  qInfo() << m_xll << m_yll;
   file.close();
 }
 void Surface::updateValue(int i) {
