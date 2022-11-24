@@ -73,8 +73,8 @@ QSurfaceDataArray* Surface::parseFileToArray(QString path) {
       static_cast<double>(m_resolution) / static_cast<double>(m_sizeX);
   int lowX = (m_degX - m_around - m_xll) * (1 / step);
   int upX = (m_degX + m_around - m_xll) / step;
-  int lowY = (m_degY - m_around - m_yll) / step;
-  int upY = (m_degY + m_around - m_yll) / step;
+  int lowY = m_sizeY - (m_degY + m_around - m_yll) / step;
+  int upY = m_sizeY - (m_degY - m_around - m_yll) / step;
 
   qInfo() << lowX * m_cellsize << upX * m_cellsize;
   qInfo() << lowY * m_cellsize << upY * m_cellsize;
