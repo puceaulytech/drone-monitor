@@ -5,14 +5,14 @@ Surface::Surface(float degX, float degY, float around) {
   m_degX = degX;
   m_degY = degY;
   m_around = around;
-  axisZ()->setReversed(true);
+  // axisZ()->setReversed(true);
   shower = new QProgressDialog;
   shower->setMinimum(0);
   shower->setMaximum(5998);
   shower->setModal(true);
   shower->setValue(shower->minimum());
   connect(this, &Surface::update, this, &Surface::updateValue);
-  setAspectRatio(40);  // 15 50
+  // setAspectRatio(30);  // 15 50
   m_mainArray = parseFileToArray(QString(""));
   QSurface3DSeries* series = new QSurface3DSeries;
   series->setDrawMode(QSurface3DSeries::DrawSurface);
@@ -21,8 +21,9 @@ Surface::Surface(float degX, float degY, float around) {
   activeTheme()->setBackgroundColor(QColor(0, 0, 0));
   activeTheme()->setWindowColor(QColor(0, 0, 0));
   QLinearGradient gr;
-  gr.setColorAt(0.002, Qt::black);
-  gr.setColorAt(0.01, Qt::green);
+  gr.setColorAt(0.0, Qt::darkBlue);
+  gr.setColorAt(0.01, Qt::blue);
+  gr.setColorAt(0.02, Qt::green);
   gr.setColorAt(0.5, Qt::yellow);
   gr.setColorAt(1, Qt::red);
   seriesList().at(0)->setBaseGradient(gr);
@@ -30,6 +31,18 @@ Surface::Surface(float degX, float degY, float around) {
   scene()->activeCamera()->setMaxZoomLevel(5000.0f);
   setMeasureFps(true);
   qInfo() << currentFps();
+  axisY()->setRange(-5, 5000);
+  QImage color = QImage(2, 2, QImage::Format_RGB32);
+  color.fill(Qt::red);
+  QCustom3DItem* plane = new QCustom3DItem;
+  // plane->setMeshFile("C:/Users/robin/Desktop/test.obj");
+  plane->setPosition(QVector3D(7.05346f, 3000.0f, 43.6154f));
+  plane->setScaling(QVector3D(0.025f, 0.025f, 0.025f));
+  // plane->setRotationAxisAndAngle ( QQuaternion::fromAxisAndAngle(0.0f, 1.0f,
+  // 0.0f, 45.0f));
+  plane->setTextureImage(color);
+  // plane->setVisible(true);
+  addCustomItem(plane);
 }
 
 QSurfaceDataArray* Surface::setupArray() {
@@ -66,15 +79,27 @@ QSurfaceDataArray* Surface::parseFileToArray(QString path) {
   for (int k = 0; k < 7; k++) {
     in.readLine();
   };
-
+  /*
+    QList<QList<int>> coucou;
+    for (int i = 0; i < 6000; i++) {
+      emit update(i);
+      QString line = in.readLine();
+      QStringList fields = line.split(" ");
+      QList<int> ez;
+      for (int j = 0; j < 6000; j++) {
+        ez.append(fields[j].toInt());
+      }
+      coucou.append(ez);
+    }
+  */
   m_sizeX = 5999;  // 5999
   m_sizeY = 5999;
   double step =
       static_cast<double>(m_resolution) / static_cast<double>(m_sizeX);
   int lowX = (m_degX - m_around - m_xll) * (1 / step);
   int upX = (m_degX + m_around - m_xll) / step;
-  int lowY = m_sizeY - (m_degY + m_around - m_yll) / step;
-  int upY = m_sizeY - (m_degY - m_around - m_yll) / step;
+  int lowY = (m_degY - m_around - m_yll) / step;
+  int upY = (m_degY + m_around - m_yll) / step;
 
   qInfo() << lowX * m_cellsize << upX * m_cellsize;
   qInfo() << lowY * m_cellsize << upY * m_cellsize;
@@ -94,7 +119,7 @@ QSurfaceDataArray* Surface::parseFileToArray(QString path) {
     QString line = in.readLine();
     QStringList fields = line.split(" ");
 
-    z = i * step;
+    z = m_yll + i * step;
 
     if (i >= lowY /*- 2000* marche bien wtf */ && i < upY /*- 2000*/) {
       auto* row = new QSurfaceDataRow(upX - lowX);
@@ -102,14 +127,14 @@ QSurfaceDataArray* Surface::parseFileToArray(QString path) {
       for (int j = lowX; j < upX; j++) {
         // if same mais y
 
-        x = j * step;
+        x = m_xll + j * step;
         double y;
         if (fields[j].toDouble() == m_undefined) {
           y = 0;
         } else {
           y = fields[j].toDouble();
         }
-        (*row)[index].setPosition(QVector3D(j, y, i));
+        (*row)[index].setPosition(QVector3D(x, y, z));
 
         index++;
       }

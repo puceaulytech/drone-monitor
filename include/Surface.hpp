@@ -2,6 +2,7 @@
 #define SURFACE_HPP
 #include <Degres.hpp>
 #include <Q3DSurface>
+#include <QCustom3DItem>
 #include <QDebug>
 #include <QFile>
 #include <QFileDialog>
