@@ -7,6 +7,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_AUTORCC ON)
 
+option(CUSTOM_STYLESHEET "Use custom stylecheet" ON)
+
 find_package(Qt6 REQUIRED COMPONENTS
     Widgets
     3DCore
@@ -22,6 +24,10 @@ qt_standard_project_setup()
 
 file(GLOB_RECURSE SOURCES src/*.cpp)
 file(GLOB_RECURSE HEADERS include/*.hpp)
+
+if (CUSTOM_STYLESHEET)
+  add_compile_definitions(USE_CUSTOM_STYLESHEEt)
+endif()
 
 add_executable(drone-monitor
     ${SOURCES}

@@ -13,9 +13,10 @@
 #include <QTimer>
 #include <QToolBar>
 #include <QWidget>
-#include <View3D.hpp>
-#include <SerialMenu.hpp>
 #include <RefreshRateMenu.hpp>
+#include <SerialMenu.hpp>
+#include <ValuesViewer.hpp>
+#include <View3D.hpp>
 
 class MainWindow : public QMainWindow {
   Q_OBJECT
@@ -44,6 +45,7 @@ private:
   QWidget* m_mainWidget{nullptr};
 
   LogViewer* m_logViewer{nullptr};
+  ValuesViewer* m_valuesViewer{nullptr};
   Commands* m_commands{nullptr};
   View3D* m_view3d{nullptr};
 
