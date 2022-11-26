@@ -12,10 +12,11 @@ Surface::Surface(float degX, float degY, float around) {
   shower->setModal(true);
   shower->setValue(shower->minimum());
   connect(this, &Surface::update, this, &Surface::updateValue);
-  // setAspectRatio(30);  // 15 50
+  setAspectRatio(10);  // 15 50
   m_mainArray = parseFileToArray(QString(""));
   QSurface3DSeries* series = new QSurface3DSeries;
   series->setDrawMode(QSurface3DSeries::DrawSurface);
+  series->setFlatShadingEnabled(false);
   series->dataProxy()->resetArray(m_mainArray);
   addSeries(series);
   activeTheme()->setBackgroundColor(QColor(0, 0, 0));
@@ -23,7 +24,7 @@ Surface::Surface(float degX, float degY, float around) {
   QLinearGradient gr;
   gr.setColorAt(0.0, Qt::darkBlue);
   gr.setColorAt(0.01, Qt::blue);
-  gr.setColorAt(0.02, Qt::green);
+  gr.setColorAt(0.015, Qt::green);
   gr.setColorAt(0.5, Qt::yellow);
   gr.setColorAt(1, Qt::red);
   seriesList().at(0)->setBaseGradient(gr);
@@ -31,13 +32,14 @@ Surface::Surface(float degX, float degY, float around) {
   scene()->activeCamera()->setMaxZoomLevel(5000.0f);
   setMeasureFps(true);
   qInfo() << currentFps();
-  axisY()->setRange(-5, 5000);
+  // axisY()->setRange(-5, 5000);
   QImage color = QImage(2, 2, QImage::Format_RGB32);
   color.fill(Qt::red);
   QCustom3DItem* plane = new QCustom3DItem;
+  //"C:\Users\robin\Desktop\Mig_29_obj.obj"
   // plane->setMeshFile("C:/Users/robin/Desktop/test.obj");
-  plane->setPosition(QVector3D(7.05346f, 3000.0f, 43.6154f));
-  plane->setScaling(QVector3D(0.025f, 0.025f, 0.025f));
+  plane->setPosition(QVector3D(7.05346f, 300.0f, 43.6154f));
+  plane->setScaling(QVector3D(0.005f, 0.005f, 0.005f));
   // plane->setRotationAxisAndAngle ( QQuaternion::fromAxisAndAngle(0.0f, 1.0f,
   // 0.0f, 45.0f));
   plane->setTextureImage(color);
@@ -189,4 +191,9 @@ void Surface::initFromFileHeader(QString path) {
 void Surface::updateValue(int i) {
   shower->setValue(i);
   // qInfo() << shower->value();
+}
+void Surface::initDrone(Drone drone) {
+  // faut mettre le code pour initialiser le QCustom3DObject mais la il est 1h37
+  // j'ai la flemme de ctrl c ctrl v comme un bourain donc je vais plutot bosser
+  // sur Drone.cpp
 }

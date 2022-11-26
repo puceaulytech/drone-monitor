@@ -1,6 +1,7 @@
 #ifndef SURFACE_HPP
 #define SURFACE_HPP
 #include <Degres.hpp>
+#include <Drone.hpp>
 #include <Q3DSurface>
 #include <QCustom3DItem>
 #include <QDebug>
@@ -36,7 +37,7 @@ private:
   void initFromFileHeader(QString path);
   QSurfaceDataArray* m_mainArray;
   QSurfaceDataArray* setupArray();
-
+  void initDrone(Drone drone);
 Q_SIGNALS:
   void update(int i);
 public Q_SLOTS:
