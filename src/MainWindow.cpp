@@ -10,6 +10,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
   m_logViewer = new LogViewer;
   m_commands = new Commands;
   m_view3d = new View3D;
+  m_serial = new Serial;
 
   setWindowTitle("Drone Monitoring");
   resize(1920, 1080);
@@ -39,6 +40,11 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
   addDockWidget(Qt::BottomDockWidgetArea, logDockWidget);
   m_viewMenu->addAction(logDockWidget->toggleViewAction());
 
+  auto* serialDockWidget = new QDockWidget("Serial");
+  serialDockWidget->setWidget(m_serial);
+  addDockWidget(Qt::RightDockWidgetArea, serialDockWidget);
+  m_viewMenu->addAction(serialDockWidget->toggleViewAction());
+
   m_logViewer->printLog("Starting Drone Monitor...");
 
   // Commands
@@ -57,12 +63,10 @@ void MainWindow::setupMenus() {
   m_settingsMenu = menuBar()->addMenu(tr("&Settings"));
   m_helpMenu = menuBar()->addMenu(tr("&Help"));
 
-  m_serialMenu = new SerialMenu("Port");
   m_refreshRateMenu = new RefreshRateMenu("Refresh Rate");
 
   m_helpMenu->insertActions(nullptr, {m_aboutQtAction, m_aboutAction});
   m_settingsMenu->insertMenu(nullptr, m_refreshRateMenu);
-  m_settingsMenu->insertMenu(nullptr, m_serialMenu);
 
 }
 
@@ -108,6 +112,7 @@ void MainWindow::setupToolbar() {
     m_view3d->centerCamera();
   });
 }
+
 void MainWindow::setupTimer() {
   m_refreshRateMenu->refreshRate = 1000;
   m_mainTimer = new QTimer;

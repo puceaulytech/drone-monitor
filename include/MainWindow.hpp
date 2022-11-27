@@ -13,9 +13,9 @@
 #include <QTimer>
 #include <QToolBar>
 #include <QWidget>
-#include <View3D.hpp>
-#include <SerialMenu.hpp>
 #include <RefreshRateMenu.hpp>
+#include <Serial.hpp>
+#include <View3D.hpp>
 
 class MainWindow : public QMainWindow {
   Q_OBJECT
@@ -46,13 +46,13 @@ private:
   LogViewer* m_logViewer{nullptr};
   Commands* m_commands{nullptr};
   View3D* m_view3d{nullptr};
+  Serial* m_serial{nullptr};
 
   // Menus
   QMenu* m_viewMenu{nullptr};
   QMenu* m_helpMenu{nullptr};
   QMenu* m_settingsMenu{nullptr};
   // In the settings menu
-  SerialMenu* m_serialMenu{nullptr};
   RefreshRateMenu* m_refreshRateMenu{nullptr};
 
   // Actions
