@@ -15,6 +15,7 @@
 #include <QWidget>
 #include <RefreshRateMenu.hpp>
 #include <Serial.hpp>
+#include <ValuesViewer.hpp>
 #include <View3D.hpp>
 
 class MainWindow : public QMainWindow {
@@ -44,6 +45,7 @@ private:
   QWidget* m_mainWidget{nullptr};
 
   LogViewer* m_logViewer{nullptr};
+  ValuesViewer* m_valuesViewer{nullptr};
   Commands* m_commands{nullptr};
   View3D* m_view3d{nullptr};
   Serial* m_serial{nullptr};

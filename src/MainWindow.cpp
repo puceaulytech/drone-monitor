@@ -8,6 +8,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
   m_mainLayout = new QGridLayout;
   m_mainWidget = new QWidget;
   m_logViewer = new LogViewer;
+  m_valuesViewer = new ValuesViewer;
   m_commands = new Commands;
   m_view3d = new View3D;
   m_serial = new Serial;
@@ -44,6 +45,11 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
   serialDockWidget->setWidget(m_serial);
   addDockWidget(Qt::RightDockWidgetArea, serialDockWidget);
   m_viewMenu->addAction(serialDockWidget->toggleViewAction());
+
+  auto* valuesDockWidget = new QDockWidget("Values");
+  valuesDockWidget->setWidget(m_valuesViewer);
+  addDockWidget(Qt::RightDockWidgetArea, valuesDockWidget);
+  m_viewMenu->addAction(valuesDockWidget->toggleViewAction());
 
   m_logViewer->printLog("Starting Drone Monitor...");
 
