@@ -26,7 +26,7 @@ file(GLOB_RECURSE SOURCES src/*.cpp)
 file(GLOB_RECURSE HEADERS include/*.hpp)
 
 if (CUSTOM_STYLESHEET)
-  add_compile_definitions(USE_CUSTOM_STYLESHEEt)
+  add_compile_definitions(USE_CUSTOM_STYLESHEET)
 endif()
 
 add_executable(drone-monitor

@@ -12,6 +12,8 @@ int main(int argc, char** argv) {
   QString styleSheet = QLatin1String(file.readAll());
 
   app.setStyleSheet(styleSheet);
+#elif defined(_WIN32)
+  QApplication::setStyle(QStyleFactory::create("Fusion"));
 #endif
   MainWindow mainWindow;
   mainWindow.show();
