@@ -2,21 +2,26 @@
 
 ValuesViewer::ValuesViewer(QWidget* parent) : QWidget(parent) {
   m_layout = new QFormLayout;
-  m_valuesName = {"Vitesse", "Altitude"};
-
-  setupFields();
 
   setLayout(m_layout);
 }
 
-void ValuesViewer::setupFields() {
-  for (const auto& valueName : m_valuesName) {
-    auto* value = new QLineEdit("0");
-    value->setReadOnly(true);
+void ValuesViewer::addNewField(const QString& fieldName) {
+  qInfo() << fieldName;
+  auto* field = new QLineEdit;
+  field->setReadOnly(true);
+  m_values.insert(fieldName, field);
+  m_layout->addRow(fieldName, field);
+}
 
-    value->setStyleSheet("background-color: green;");
+void ValuesViewer::dataReceived(const QString& label, double value) {
+  if (!m_values.contains(label))
+    addNewField(label);
 
-    m_layout->addRow(valueName, value);
-    m_values.insert(valueName, value);
-  }
+  auto field = m_values.value(label);
+  field->setText(QString::number(value));
+}
+
+double ValuesViewer::getValue(const QString& label) const {
+  return 69.666;
 }

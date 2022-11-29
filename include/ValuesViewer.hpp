@@ -14,12 +14,16 @@ class ValuesViewer : public QWidget {
 public:
   explicit ValuesViewer(QWidget* parent = nullptr);
 
+  double getValue(const QString& label) const;
+
 private:
   QFormLayout* m_layout;
-  QStringList m_valuesName;
   QMap<QString, QLineEdit*> m_values;
 
-  void setupFields();
+  void addNewField(const QString& fieldName);
+
+public Q_SLOTS:
+  void dataReceived(const QString& data, double value);
 };
 
 #endif

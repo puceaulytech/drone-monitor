@@ -62,6 +62,8 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
 
     m_biteObject.clear();
   });
+
+  connect(m_serial, &Serial::onReceiveData, m_valuesViewer, &ValuesViewer::dataReceived);
 }
 
 void MainWindow::setupMenus() {
