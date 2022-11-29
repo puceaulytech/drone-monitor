@@ -17,6 +17,7 @@ public:
   QList<Waypoint> path;
   Waypoint start;
   Waypoint target;
+  float ez;
 
 private:
   // path
