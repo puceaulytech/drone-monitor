@@ -13,6 +13,7 @@
 #include <QSurface>
 #include <QVector3D>
 #include <QWidget>
+#include <Waypoint.hpp>
 //#include <QtMath>
 class Surface : public Q3DSurface {
   Q_OBJECT

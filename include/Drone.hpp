@@ -6,17 +6,18 @@
 class Drone {
 public:
   Drone();
-  void addWaypoint(Waypoint add);
-  Waypoint getWaypoint(int index);
+  QVector3D getBezierPoint(QVector3D* points, int numPoints, float t);
+  void computePath(int n);
   // bezier
-
-private:
   QString m_meshFile;
   QVector3D m_position;
   QVector3D m_heading;
   float m_speed;
   QList<Waypoint> path;
+  Waypoint start;
+  Waypoint target;
 
+private:
   // path
   //  telemetry data
 public Q_SLOTS:

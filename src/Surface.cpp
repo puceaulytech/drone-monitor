@@ -16,7 +16,7 @@ Surface::Surface(float degX, float degY, float around) {
   m_mainArray = parseFileToArray(QString(""));
   QSurface3DSeries* series = new QSurface3DSeries;
   series->setDrawMode(QSurface3DSeries::DrawSurface);
-  series->setFlatShadingEnabled(false);
+  // series->setFlatShadingEnabled(false);
   series->dataProxy()->resetArray(m_mainArray);
   addSeries(series);
   activeTheme()->setBackgroundColor(QColor(0, 0, 0));
@@ -37,16 +37,20 @@ Surface::Surface(float degX, float degY, float around) {
   color.fill(Qt::red);
   QCustom3DItem* plane = new QCustom3DItem;
   //"C:\Users\robin\Desktop\Mig_29_obj.obj"
-  // plane->setMeshFile("C:/Users/robin/Desktop/test.obj");
-  plane->setPosition(QVector3D(7.05346f, 300.0f, 43.6154f));
+  plane->setMeshFile("C:/Users/robin/Desktop/test.obj");
+  // 43.56515844128664, 7.133647658036022
+  plane->setPosition(QVector3D(7.133647f, 300.0f, 43.5651584f));
   plane->setScaling(QVector3D(0.005f, 0.005f, 0.005f));
   // plane->setRotationAxisAndAngle ( QQuaternion::fromAxisAndAngle(0.0f, 1.0f,
   // 0.0f, 45.0f));
   plane->setTextureImage(color);
   // plane->setVisible(true);
+  // 43.618497136583315, 7.065778601779528
+  Waypoint* coucou =
+      new Waypoint(QVector3D(7.065778f, 350.0f, 43.618497f), 10.0);
+  addCustomItem(coucou);
   addCustomItem(plane);
 }
-
 QSurfaceDataArray* Surface::setupArray() {
   int sizeX = 100;
   int sizeY = 100;
@@ -193,7 +197,7 @@ void Surface::updateValue(int i) {
   // qInfo() << shower->value();
 }
 void Surface::initDrone(Drone drone) {
-  // faut mettre le code pour initialiser le QCustom3DObject mais la il est 1h37
-  // j'ai la flemme de ctrl c ctrl v comme un bourain donc je vais plutot bosser
-  // sur Drone.cpp
+  // faut mettre le code pour initialiser le QCustom3DObject mais la il est
+  // 1h37 j'ai la flemme de ctrl c ctrl v comme un bourain donc je vais plutot
+  // bosser sur Drone.cpp
 }
