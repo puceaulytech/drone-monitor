@@ -21,6 +21,7 @@ class Surface : public Q3DSurface {
 public:
   Surface(float degX, float degY, float around);
   QSurfaceDataArray* parseFileToArray(QString path);
+  Drone* drone;
 
 private:
   float m_degX;

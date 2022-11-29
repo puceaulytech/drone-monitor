@@ -67,6 +67,8 @@ private:
   QVector<Qt3DCore::QEntity*> m_biteObject;
   QTimer* m_mainTimer{nullptr};
   int m_refreshRate;
+Q_SIGNALS:
+  void timerUpdate();
 private Q_SLOTS:
   void showAbout();
   void showAboutQt();

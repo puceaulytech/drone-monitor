@@ -1,25 +1,20 @@
 #include <Drone.hpp>
-Drone::Drone() {}
+Drone::Drone() {
+  setMeshFile("C:/Users/robin/Desktop/test.obj");
+  setPosition(QVector3D(7.143647f, 300.0f, 43.4651584f));
+  setScaling(QVector3D(0.005f, 0.005f, 0.005f));
+  QImage color = QImage(2, 2, QImage::Format_RGB32);
+  color.fill(Qt::red);
+  setTextureImage(color);
+}
 void Drone::updateTelemetry() {
+  setPosition(
+      QVector3D(position().x(), position().y(), position().z() + 0.001));
+  qInfo() << "MOVED";
+  setRotationAxisAndAngle(QVector3D(0, 1, 0), 180);
   // potentiellement prendre le paquet en paramètre et en extraire toute la
   // telemetrie du drone
 }
 // on ne peut jamais condenser un fluide hyper critique en le comprimant a t
 // constant
-void Drone::computePath(int n) {
-  QVector3D test = get
-
-      QVector3D
-      Drone::getBezierPoint(QVector3D * points, int numPoints, float t) {
-    QVector3D* tmp = new QVector3D[numPoints];
-    memcpy(tmp, points, numPoints * sizeof(QVector3D));
-    int i = numPoints - 1;
-    while (i > 0) {
-      for (int k = 0; k < i; k++) tmp[k] = tmp[k] + t * (tmp[k + 1] - tmp[k]);
-      i--;
-    }
-    QVector3D answer = tmp[0];
-    delete[] tmp;
-    return answer;
-  }
-}
+void Drone::computePath(int n) {}

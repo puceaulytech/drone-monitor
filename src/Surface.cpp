@@ -50,6 +50,10 @@ Surface::Surface(float degX, float degY, float around) {
       new Waypoint(QVector3D(7.065778f, 350.0f, 43.618497f), 10.0);
   addCustomItem(coucou);
   addCustomItem(plane);
+
+  // Drone* ez = new Drone();
+  drone = new Drone;
+  addCustomItem(drone);
 }
 QSurfaceDataArray* Surface::setupArray() {
   int sizeX = 100;

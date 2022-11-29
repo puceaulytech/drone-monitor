@@ -17,6 +17,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
   setupActions();
   setupMenus();
   setupToolbar();
+  setupTimer();
   // Top left
   m_mainLayout->addWidget(QWidget::createWindowContainer(m_view3d), 0, 0);
 
@@ -129,6 +130,11 @@ void MainWindow::setupToolbar() {
     addDockWidget(Qt::LeftDockWidgetArea, geoDockWidget);
     m_viewMenu->addAction(geoDockWidget->toggleViewAction());
     m_geoSurface->show();
+    connect(this, &MainWindow::timerUpdate, m_geoSurface->drone,
+            &Drone::updateTelemetry);
+    connect(this, &MainWindow::timerUpdate, this, [=] {
+      m_logViewer->printLog("refreshed position");
+    });
   });
 }
 void MainWindow::setupTimer() {
@@ -139,7 +145,9 @@ void MainWindow::setupTimer() {
   for (const auto& refreshAction : m_refreshActions)
     connect(refreshAction.second, &QAction::triggered, this, [=] {
       m_refreshRate = refreshAction.first;
+      m_mainTimer->setInterval(m_refreshRate);
     });
+  connect(m_mainTimer, &QTimer::timeout, this, &MainWindow::timerUpdate);
 
   m_mainTimer->start();
 }

@@ -3,7 +3,8 @@
 #include <QObject>
 #include <QVector3D>
 #include <Waypoint.hpp>
-class Drone {
+class Drone : public QCustom3DItem {
+  Q_OBJECT
 public:
   Drone();
   QVector3D getBezierPoint(QVector3D* points, int numPoints, float t);
