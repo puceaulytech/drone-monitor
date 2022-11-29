@@ -23,6 +23,7 @@ Serial::Serial(QWidget* parent)
   connect(m_portChooser, &QComboBox::currentIndexChanged, this, &Serial::changePort);
   connect(m_connect, &QPushButton::clicked, this, &Serial::connectSerial);
 
+  m_configLayout->setContentsMargins(0, 0, 0, 0);
   m_configLayout->addWidget(m_portChooser);
   m_configLayout->addWidget(m_baudRateChooser);
   m_configWidget->setLayout(m_configLayout);
@@ -90,7 +91,6 @@ void Serial::handleRead() {
   if (!stringData.isEmpty()) {
     auto parseResult = parsePacket(stringData);
     Q_EMIT onReceiveData(parseResult.first, parseResult.second);
-    m_reporter->setText(data);
   }
 }
 QPair<QString, double> Serial::parsePacket(const QString& data) {
