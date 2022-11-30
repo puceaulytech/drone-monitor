@@ -18,11 +18,6 @@ class Serial : public QWidget {
 public:
   explicit Serial(QWidget* parent = nullptr);
 
-  enum DataType {
-    Height,
-    Speed,
-  };
-
 private:
   QSerialPort m_serialPort;
   QVBoxLayout* m_layout;
