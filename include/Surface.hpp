@@ -22,6 +22,7 @@ public:
   Surface(float degX, float degY, float around);
   QSurfaceDataArray* parseFileToArray(QString path);
   Drone* drone;
+  float m_resolution;
 
 private:
   float m_degX;
@@ -34,7 +35,7 @@ private:
   float m_cellsize;
   int m_yll;
   int m_value;
-  float m_resolution;
+
   QProgressDialog* shower;
   void initFromFileHeader(QString path);
   QSurfaceDataArray* m_mainArray;

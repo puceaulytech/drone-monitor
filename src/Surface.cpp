@@ -11,6 +11,7 @@ Surface::Surface(float degX, float degY, float around) {
   shower->setMaximum(5998);
   shower->setModal(true);
   shower->setValue(shower->minimum());
+  shower->setLabelText("Processing very complex equations...");
   connect(this, &Surface::update, this, &Surface::updateValue);
   setAspectRatio(10);  // 15 50
   m_mainArray = parseFileToArray(QString(""));
@@ -52,7 +53,7 @@ Surface::Surface(float degX, float degY, float around) {
   addCustomItem(plane);
 
   // Drone* ez = new Drone();
-  drone = new Drone;
+  drone = new Drone(m_resolution);
   addCustomItem(drone);
 }
 QSurfaceDataArray* Surface::setupArray() {
@@ -156,7 +157,7 @@ QSurfaceDataArray* Surface::parseFileToArray(QString path) {
       //   free(row);
     }
   }
-
+  file.close();
   return data;
 }
 
