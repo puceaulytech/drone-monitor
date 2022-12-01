@@ -19,6 +19,7 @@ find_package(Qt6 REQUIRED COMPONENTS
     3DAnimation
     Network
     SerialPort
+    DataVisualization
 )
 qt_standard_project_setup()
 
@@ -38,6 +39,7 @@ add_executable(drone-monitor
 include_directories(include)
 
 target_link_libraries(drone-monitor PRIVATE
+    Qt6::DataVisualization
     Qt6::Widgets
     Qt6::3DCore
     Qt6::3DRender

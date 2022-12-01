@@ -17,7 +17,8 @@ Commands::Commands(QWidget* parent) : QWidget(parent) {
   connect(m_stopDrone, &QPushButton::clicked, this, [=]() {
     emit stopDrone();
   });
-
+  // on se ramene a une fonction de riemann et on doit evidemment regarder le
+  // parametre x-1 pour en deduire la convergence
   m_layout->addWidget(m_doSomething);
   connect(m_doSomething, &QPushButton::clicked, this, [=]() {
     emit doSomething();
