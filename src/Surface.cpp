@@ -36,21 +36,21 @@ Surface::Surface(float degX, float degY, float around) {
   // axisY()->setRange(-5, 5000);
   QImage color = QImage(2, 2, QImage::Format_RGB32);
   color.fill(Qt::red);
-  // QCustom3DItem* plane = new QCustom3DItem;
+  QCustom3DItem* plane = new QCustom3DItem;
   //"C:\Users\robin\Desktop\Mig_29_obj.obj"
-  // plane->setMeshFile("C:/Users/robin/Desktop/test.obj");
+  plane->setMeshFile("C:/Users/robin/Desktop/test.obj");
   // 43.56515844128664, 7.133647658036022
-  // plane->setPosition(QVector3D(7.133647f, 300.0f, 43.5651584f));
-  // plane->setScaling(QVector3D(0.005f, 0.005f, 0.005f));
+  plane->setPosition(QVector3D(7.133647f, 300.0f, 43.5651584f));
+  plane->setScaling(QVector3D(0.005f, 0.005f, 0.005f));
   // plane->setRotationAxisAndAngle ( QQuaternion::fromAxisAndAngle(0.0f, 1.0f,
   // 0.0f, 45.0f));
-  // plane->setTextureImage(color);
+  plane->setTextureImage(color);
   // plane->setVisible(true);
   // 43.618497136583315, 7.065778601779528
   Waypoint* coucou =
       new Waypoint(QVector3D(7.065778f, 350.0f, 43.618497f), 10.0);
   addCustomItem(coucou);
-  // addCustomItem(plane);
+  addCustomItem(plane);
 
   // Drone* ez = new Drone();
   drone = new Drone(m_resolution);

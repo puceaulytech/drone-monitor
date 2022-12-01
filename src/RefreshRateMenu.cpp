@@ -1,6 +1,6 @@
 #include <RefreshRateMenu.hpp>
 
-RefreshRateMenu::RefreshRateMenu(const QString& title, QTimer* timer, QWidget* parent) : QMenu(title, parent), m_timer(timer) {
+RefreshRateMenu::RefreshRateMenu(const QString& title, QWidget* parent) : QMenu(title, parent) {
   m_actionGroup = new QActionGroup(parent);
   QVector<int> initialRefreshRates = {1000, 100, 50, 10};
 
@@ -14,9 +14,8 @@ RefreshRateMenu::RefreshRateMenu(const QString& title, QTimer* timer, QWidget* p
   QAction* previous = nullptr;
   for (const auto& refreshAction : m_refreshActions) {
     insertAction(previous, refreshAction.second);
-    connect(refreshAction.second, &QAction::triggered, this, [&] {
+    connect(refreshAction.second, &QAction::triggered, this, [=] {
       refreshRate = refreshAction.first;
-      m_timer->setInterval(refreshRate);
     });
 
     previous = refreshAction.second;
