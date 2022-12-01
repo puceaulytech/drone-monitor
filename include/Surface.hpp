@@ -1,3 +1,5 @@
+#pragma once
+
 #ifndef SURFACE_HPP
 #define SURFACE_HPP
 #include <Degres.hpp>
