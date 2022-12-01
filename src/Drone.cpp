@@ -1,6 +1,6 @@
 #include <Drone.hpp>
 Drone::Drone(float resolution) {
-  // setMeshFile("C:/Users/robin/Desktop/test.obj");
+  setMeshFile("://ressources/mig29.obj");
   setPosition(QVector3D(7.123647f, 300.0f, 43.5651584f));
   setScaling(QVector3D(0.005f, 0.005f, 0.005f));
   QImage color = QImage(2, 2, QImage::Format_RGB32);

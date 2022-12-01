@@ -9,5 +9,6 @@
         <file>images/handle.png</file>
         <file>images/load.png</file>
         <file>ressources/waypoint.obj</file>
+        <file>ressources/mig29.obj</file>
     </qresource>
 </RCC>
