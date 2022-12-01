@@ -16,10 +16,10 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
   setWindowTitle("Drone Monitoring");
   resize(1920, 1080);
 
+  setupTimer();
   setupActions();
   setupMenus();
   setupToolbar();
-  setupTimer();
   // Top left
   m_mainLayout->addWidget(QWidget::createWindowContainer(m_view3d), 0, 0);
 
@@ -72,7 +72,7 @@ void MainWindow::setupMenus() {
   m_settingsMenu = menuBar()->addMenu(tr("&Settings"));
   m_helpMenu = menuBar()->addMenu(tr("&Help"));
 
-  m_refreshRateMenu = new RefreshRateMenu("Refresh Rate");
+  m_refreshRateMenu = new RefreshRateMenu("Refresh Rate", m_mainTimer);
 
   m_helpMenu->insertActions(nullptr, {m_aboutQtAction, m_aboutAction});
   m_settingsMenu->insertMenu(nullptr, m_refreshRateMenu);
@@ -141,9 +141,8 @@ void MainWindow::setupToolbar() {
 }
 
 void MainWindow::setupTimer() {
-  m_refreshRateMenu->refreshRate = 1000;
   m_mainTimer = new QTimer;
-  m_mainTimer->setInterval(m_refreshRateMenu->refreshRate);
+  m_mainTimer->setInterval(1000);
   connect(m_mainTimer, &QTimer::timeout, this, &MainWindow::timerUpdate);
 
   m_mainTimer->start();
