@@ -3,9 +3,11 @@
         <file>images/save.png</file>
         <file>images/draw.png</file>
         <file>images/center.png</file>
-    	<file>images/checkbox.png</file>
+        <file>images/checkbox.png</file>
         <file>darkorange.stylesheet</file>
         <file>images/down_arrow.png</file>
-    	<file>images/handle.png</file>
+        <file>images/handle.png</file>
+        <file>images/load.png</file>
+        <file>ressources/waypoint.obj</file>
     </qresource>
 </RCC>

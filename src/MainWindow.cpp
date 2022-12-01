@@ -17,6 +17,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
   setupActions();
   setupMenus();
   setupToolbar();
+  setupTimer();
   // Top left
   m_mainLayout->addWidget(QWidget::createWindowContainer(m_view3d), 0, 0);
 
@@ -96,7 +97,7 @@ void MainWindow::showAboutQt() {
 void MainWindow::setupToolbar() {
   QPixmap draw(":/images/draw.png");
   QPixmap center(":/images/center.png");
-
+  QPixmap ez(":/images/load.png");
   m_toolbar = addToolBar("Toolbar");
 
   m_drawFileAction = m_toolbar->addAction(QIcon(draw), "Draw File");
@@ -116,6 +117,25 @@ void MainWindow::setupToolbar() {
     m_logViewer->printLog("Centering the camera");
     m_view3d->centerCamera();
   });
+
+  m_loadAscii = m_toolbar->addAction(QIcon(ez), "Load Ascii");
+  connect(m_loadAscii, &QAction::triggered, this, [=]() {
+    m_geoSurface = new Surface(7.05346, 43.6154, 0.1);
+    // 43.45268203241274, 6.795364528013224
+    //(7.05346, 43.6154, 0.1)
+    // 50.80593839864178, 3.2336237136124435
+    m_geoViewer = QWidget::createWindowContainer(m_geoSurface);
+    auto* geoDockWidget = new QDockWidget("Geo Viewer");
+    geoDockWidget->setWidget(m_geoViewer);
+    addDockWidget(Qt::LeftDockWidgetArea, geoDockWidget);
+    m_viewMenu->addAction(geoDockWidget->toggleViewAction());
+    m_geoSurface->show();
+    connect(this, &MainWindow::timerUpdate, m_geoSurface->drone,
+            &Drone::updateTelemetry);
+    connect(this, &MainWindow::timerUpdate, this, [=] {
+      m_logViewer->printLog("refreshed position");
+    });
+  });
 }
 void MainWindow::setupTimer() {
   m_refreshRate = 1000;
@@ -125,7 +145,9 @@ void MainWindow::setupTimer() {
   for (const auto& refreshAction : m_refreshActions)
     connect(refreshAction.second, &QAction::triggered, this, [=] {
       m_refreshRate = refreshAction.first;
+      m_mainTimer->setInterval(m_refreshRate);
     });
+  connect(m_mainTimer, &QTimer::timeout, this, &MainWindow::timerUpdate);
 
   m_mainTimer->start();
 }

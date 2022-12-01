@@ -8,12 +8,14 @@ int main(int argc, char** argv) {
 
 #ifdef _WIN32
   QApplication::setStyle(QStyleFactory::create("Fusion"));
+#endif
+
   QFile file(":/darkorange.stylesheet");
   file.open(QFile::ReadOnly);
   QString styleSheet = QLatin1String(file.readAll());
 
   app.setStyleSheet(styleSheet);
-#endif
+
   MainWindow mainWindow;
   mainWindow.show();
 
