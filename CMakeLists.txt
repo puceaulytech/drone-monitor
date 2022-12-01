@@ -48,9 +48,15 @@ set_target_properties(drone-monitor PROPERTIES
     MACOSX_BUNDLE ON
 )
 
+include(GNUInstallDirs)
+
 install(TARGETS drone-monitor
     BUNDLE  DESTINATION .
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+)
+
+install(FILES LICENSE
+    DESTINATION ${CMAKE_INSTALL_DOCDIR}
 )
 
 qt_generate_deploy_app_script(
@@ -63,12 +69,17 @@ install(SCRIPT ${deploy_script})
 
 set(PACKAGE_NAME "Drone Monitor")
 
-set(CPACK_PACKAGE_VENDOR "Romain Chardiny and Robin Perdreau ")
+set(CPACK_PACKAGE_VENDOR "Romain Chardiny and Robin Perdreau")
+set(CPACK_PACKAGE_CONTACT "Romain Chardiny <romain.chardiny@gmail.com>")
 set(CPACK_PACKAGE_INSTALL_DIRECTORY "drone-monitor")
+set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/LICENSE")
+set(CPACK_PACKAGE_EXECUTABLES "drone-monitor;Drone Monitor")
+
 set(CPACK_NSIS_DISPLAY_NAME ${PACKAGE_NAME})
 set(CPACK_NSIS_PACKAGE_NAME ${PACKAGE_NAME})
 set(CPACK_NSIS_MANIFEST_DPI_AWARE ON)
-set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/LICENSE")
-set(CPACK_PACKAGE_EXECUTABLES "drone-monitor;Drone Monitor")
+
+set(CPACK_DEBIAN_PACKAGE_ARCHITECTURE "amd64")
+set(CPACK_DEBIAN_PACKAGE_DEPENDS "libqt6widgets6, libqt63dcore6, libqt63dextras6, libqt63dinput6, libqt63drender6, libqt63danimation6, libqt6network6")
 
 include(CPack)
