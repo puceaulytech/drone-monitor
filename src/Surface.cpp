@@ -38,7 +38,7 @@ Surface::Surface(float degX, float degY, float around) {
   color.fill(Qt::red);
   QCustom3DItem* plane = new QCustom3DItem;
   //"C:\Users\robin\Desktop\Mig_29_obj.obj"
-  plane->setMeshFile("C:/Users/robin/Desktop/test.obj");
+  plane->setMeshFile("://ressources/mig29.obj");
   // 43.56515844128664, 7.133647658036022
   plane->setPosition(QVector3D(7.133647f, 300.0f, 43.5651584f));
   plane->setScaling(QVector3D(0.005f, 0.005f, 0.005f));

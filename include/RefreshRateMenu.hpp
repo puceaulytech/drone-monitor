@@ -17,6 +17,9 @@ public:
 private:
   QVector<QPair<int, QAction*>> m_refreshActions;
   QActionGroup* m_actionGroup;
+
+Q_SIGNALS:
+  void updateRefreshRate(int newRefreshRate);
 };
 
 #endif

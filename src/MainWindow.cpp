@@ -144,7 +144,11 @@ void MainWindow::setupTimer() {
   m_refreshRateMenu->refreshRate = 1000;
   m_mainTimer = new QTimer;
   m_mainTimer->setInterval(m_refreshRateMenu->refreshRate);
+
   connect(m_mainTimer, &QTimer::timeout, this, &MainWindow::timerUpdate);
+  connect(m_refreshRateMenu, &RefreshRateMenu::updateRefreshRate, this, [=] (int refreshRate) {
+    m_mainTimer->setInterval(refreshRate);
+  });
 
   m_mainTimer->start();
 }
