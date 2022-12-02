@@ -6,13 +6,7 @@ Surface::Surface(float degX, float degY, float around) {
   m_degY = degY;
   m_around = around;
   // axisZ()->setReversed(true);
-  shower = new QProgressDialog;
-  shower->setMinimum(0);
-  shower->setMaximum(5998);
-  shower->setModal(true);
-  shower->setValue(shower->minimum());
-  shower->setLabelText("Processing very complex equations...");
-  connect(this, &Surface::update, this, &Surface::updateValue);
+
   setAspectRatio(10);  // 15 50
   m_mainArray = parseFileToArray(QString(""));
   QSurface3DSeries* series = new QSurface3DSeries;
@@ -73,17 +67,17 @@ QSurfaceDataArray* Surface::setupArray() {
 QSurfaceDataArray* Surface::parseFileToArray(QString path) {
   auto* data = new QSurfaceDataArray;
 
-  if (path == "") {
+  if (path.isEmpty()) {
     path = QFileDialog::getOpenFileName(
         nullptr, "Open 3D Object", QDir::currentPath(), "Text files (*.asc)");
   }
-  initFromFileHeader(path);
   QFile file(path);
   if (!file.open(QIODevice::ReadOnly)) {
     QMessageBox::critical(nullptr, "File not found",
                           "Cannot find specified file");
     return data;
   }
+  initFromFileHeader(file);
   // alors ca c'est un point de methode : bien observer le domaine
   // d'integrabilité et combien d'integrales il faut considerer
   QTextStream in(&file);
@@ -118,14 +112,22 @@ QSurfaceDataArray* Surface::parseFileToArray(QString path) {
   // autres cycles moteurs
   m_resolution = qFloor((static_cast<float>(m_sizeX) * m_cellsize) + 0.5);
 
+
+  QProgressDialog progressDialog;
+  progressDialog.setMinimum(0);
+  progressDialog.setMaximum(5998);
+  progressDialog.setModal(true);
+  progressDialog.setValue(progressDialog.minimum());
+  progressDialog.setLabelText("Processing very complex equations...");
+
   qInfo() << "step :" << step;
   double z;
   double x;
   qInfo() << "drawing from " << m_xll + lowX * m_cellsize << "to"
           << m_xll + upX * m_cellsize;
   for (int i = 0; i < m_sizeY; i++) {
-    emit update(i);
     // if on est entre xmin et xmax de la surface qu'on veut dessiner
+    progressDialog.setValue(i);
 
     QString line = in.readLine();
     QStringList fields = line.split(" ");
@@ -161,14 +163,7 @@ QSurfaceDataArray* Surface::parseFileToArray(QString path) {
   return data;
 }
 
-void Surface::initFromFileHeader(QString path) {
-  QFile file(path);
-  if (!file.open(QIODevice::ReadOnly)) {
-    QMessageBox::critical(nullptr, "File not found",
-                          "Cannot find specified file");
-    return;
-  }
-
+void Surface::initFromFileHeader(QFile& file) {
   QTextStream in(&file);
   QString line = in.readLine();
   QStringList fields = line.split(" ");
@@ -195,12 +190,8 @@ void Surface::initFromFileHeader(QString path) {
   fields = line.split(" ");
   m_undefined = fields[2].toInt();
   qInfo() << m_xll << m_yll;
-  file.close();
 }
-void Surface::updateValue(int i) {
-  shower->setValue(i);
-  // qInfo() << shower->value();
-}
+
 void Surface::initDrone(Drone drone) {
   // faut mettre le code pour initialiser le QCustom3DObject mais la il est
   // 1h37 j'ai la flemme de ctrl c ctrl v comme un bourain donc je vais plutot
