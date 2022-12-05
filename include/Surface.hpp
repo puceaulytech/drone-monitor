@@ -38,15 +38,10 @@ private:
   int m_yll;
   int m_value;
 
-  QProgressDialog* shower;
-  void initFromFileHeader(QString path);
+  void initFromFileHeader(QFile& file);
   QSurfaceDataArray* m_mainArray;
   QSurfaceDataArray* setupArray();
   void initDrone(Drone drone);
-Q_SIGNALS:
-  void update(int i);
-public Q_SLOTS:
-  void updateValue(int i);
 };
 
 #endif  // SURFACE_HPP
