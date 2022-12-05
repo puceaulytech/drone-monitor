@@ -73,17 +73,18 @@ QSurfaceDataArray* Surface::setupArray() {
 QSurfaceDataArray* Surface::parseFileToArray(QString path) {
   auto* data = new QSurfaceDataArray;
 
-  if (path == "") {
+  if (path.isEmpty()) {
     path = QFileDialog::getOpenFileName(
         nullptr, "Open 3D Object", QDir::currentPath(), "Text files (*.asc)");
   }
-  initFromFileHeader(path);
+
   QFile file(path);
   if (!file.open(QIODevice::ReadOnly)) {
     QMessageBox::critical(nullptr, "File not found",
                           "Cannot find specified file");
     return data;
   }
+  initFromFileHeader(file);
   // alors ca c'est un point de methode : bien observer le domaine
   // d'integrabilité et combien d'integrales il faut considerer
   QTextStream in(&file);
@@ -161,14 +162,7 @@ QSurfaceDataArray* Surface::parseFileToArray(QString path) {
   return data;
 }
 
-void Surface::initFromFileHeader(QString path) {
-  QFile file(path);
-  if (!file.open(QIODevice::ReadOnly)) {
-    QMessageBox::critical(nullptr, "File not found",
-                          "Cannot find specified file");
-    return;
-  }
-
+void Surface::initFromFileHeader(QFile& file) {
   QTextStream in(&file);
   QString line = in.readLine();
   QStringList fields = line.split(" ");
@@ -195,7 +189,6 @@ void Surface::initFromFileHeader(QString path) {
   fields = line.split(" ");
   m_undefined = fields[2].toInt();
   qInfo() << m_xll << m_yll;
-  file.close();
 }
 void Surface::updateValue(int i) {
   shower->setValue(i);
