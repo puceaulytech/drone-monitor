@@ -28,8 +28,8 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
   // Bottom left
   m_logViewer->setSizePolicy(
       QSizePolicy::Minimum,
-      QSizePolicy::Minimum);  // To make logViewer fill the whole cell without
-                              // growing too much
+      QSizePolicy::Minimum);  // To make logViewer fill the whole cell
+                              // without growing too much
 
   // Bottom right
 
@@ -64,7 +64,8 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
     m_biteObject.clear();
   });
 
-  connect(m_serial, &Serial::onReceiveData, m_valuesViewer, &ValuesViewer::dataReceived);
+  connect(m_serial, &Serial::onReceiveData, m_valuesViewer,
+          &ValuesViewer::dataReceived);
 }
 
 void MainWindow::setupMenus() {
@@ -132,7 +133,9 @@ void MainWindow::setupToolbar() {
     addDockWidget(Qt::LeftDockWidgetArea, geoDockWidget);
     m_viewMenu->addAction(geoDockWidget->toggleViewAction());
     m_geoSurface->show();
-    connect(this, &MainWindow::timerUpdate, m_geoSurface->drone,
+    /*connect(this, &MainWindow::timerUpdate, m_geoSurface->drone,
+            &Drone::updateTelemetry);*/
+    connect(m_serial, &Serial::onReceiveData, m_geoSurface->drone,
             &Drone::updateTelemetry);
     connect(this, &MainWindow::timerUpdate, this, [=] {
       m_logViewer->printLog("refreshed position");
@@ -146,9 +149,10 @@ void MainWindow::setupTimer() {
   m_mainTimer->setInterval(m_refreshRateMenu->refreshRate);
 
   connect(m_mainTimer, &QTimer::timeout, this, &MainWindow::timerUpdate);
-  connect(m_refreshRateMenu, &RefreshRateMenu::updateRefreshRate, this, [=] (int refreshRate) {
-    m_mainTimer->setInterval(refreshRate);
-  });
+  connect(m_refreshRateMenu, &RefreshRateMenu::updateRefreshRate, this,
+          [=](int refreshRate) {
+            m_mainTimer->setInterval(refreshRate);
+          });
 
   m_mainTimer->start();
 }

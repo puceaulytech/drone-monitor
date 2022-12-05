@@ -125,13 +125,12 @@ QVector<Qt3DCore::QEntity*> View3D::drawFile(const QString& path) {
   while (!in.atEnd()) {
     QString line = in.readLine();
     QStringList fields = line.split(" ");
-
     if (index != 0) {
       auto currentEntity = drawLine(
           QVector3D(old[0].toFloat(), old[1].toFloat(), old[2].toFloat()),
           QVector3D(fields[0].toFloat(), fields[1].toFloat(),
                     fields[2].toFloat()),
-          QColor(abs(old[2].toFloat()) * 255, 255, 255));
+          QColor(255, 255, 255));
       entities.append(currentEntity);
     }
     old = fields;

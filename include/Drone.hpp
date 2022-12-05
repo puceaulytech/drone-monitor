@@ -30,7 +30,7 @@ public:
 
 private:
 public Q_SLOTS:
-  void updateTelemetry();
+  void updateTelemetry(const QString& data, double value);
 };
 
 #endif  // DRONE_HPP

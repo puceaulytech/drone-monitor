@@ -1,7 +1,6 @@
 #include <Serial.hpp>
 
-Serial::Serial(QWidget* parent)
-    : QWidget(parent), m_serialPort() {
+Serial::Serial(QWidget* parent) : QWidget(parent), m_serialPort() {
   m_layout = new QVBoxLayout;
   m_configLayout = new QHBoxLayout;
   m_configWidget = new QWidget;
@@ -16,11 +15,14 @@ Serial::Serial(QWidget* parent)
 
   m_baudRateChooser->setCurrentIndex(m_baudRateChooser->findData(9600));
 
-  connect(&m_serialPort, &QSerialPort::errorOccurred, this, &Serial::handleSerialError);
+  connect(&m_serialPort, &QSerialPort::errorOccurred, this,
+          &Serial::handleSerialError);
   connect(&m_serialPort, &QSerialPort::readyRead, this, &Serial::handleRead);
 
-  connect(m_baudRateChooser, &QComboBox::currentIndexChanged, this, &Serial::changeBaudRate);
-  connect(m_portChooser, &QComboBox::currentIndexChanged, this, &Serial::changePort);
+  connect(m_baudRateChooser, &QComboBox::currentIndexChanged, this,
+          &Serial::changeBaudRate);
+  connect(m_portChooser, &QComboBox::currentIndexChanged, this,
+          &Serial::changePort);
   connect(m_connect, &QPushButton::clicked, this, &Serial::connectSerial);
 
   m_configLayout->setContentsMargins(0, 0, 0, 0);
@@ -67,8 +69,7 @@ void Serial::changePort() {
 }
 
 void Serial::connectSerial() {
-  if (m_serialPort.isOpen())
-    m_serialPort.close();
+  if (m_serialPort.isOpen()) m_serialPort.close();
 
   if (!m_serialPort.open(QIODevice::ReadOnly)) {
     m_reporter->setText("Error: " + m_serialPort.errorString());

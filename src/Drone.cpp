@@ -11,11 +11,15 @@ Drone::Drone(float resolution) {
   start = new Waypoint();
   m_resolution = resolution;
 }
-void Drone::updateTelemetry() {
-  setPosition(m_position);  // qSin(ez) / 10.0));
+
+void Drone::updateTelemetry(const QString& data, double value) {
+  setPosition(m_position);
+  // qSin(ez) / 10.0));
   QVector3D merde(7.065778f, 350.0f, 43.618497f);
   ez += 0.0001;
-  m_position = QVector3D(7.123647f, 300.0f, 43.5651584f + ez);
+  if (data == "speed") {
+    m_position += QVector3D(0, 0, value);
+  }
   // setRotation(QQuaternion::fromEulerAngles(50, 0, 20));
   QVector3D delta = (m_position - merde);
   delta.setX(delta.x() * m_resolution);
@@ -25,11 +29,12 @@ void Drone::updateTelemetry() {
   QQuaternion caca = QQuaternion::rotationTo(QVector3D(0, 0, -1), delta);
 
   setRotation(caca.inverted());
-  qInfo() << delta;
+  qInfo() << m_position;
   // setRotationAxisAndAngle(QVector3D(0, 1, 0), 180);
   //  potentiellement prendre le paquet en paramètre et en extraire toute la
   //  telemetrie du drone
 }
 // on ne peut jamais condenser un fluide hyper critique en le comprimant a t
 // constant
+
 void Drone::computePath(int n) {}
