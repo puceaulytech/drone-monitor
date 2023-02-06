@@ -89,7 +89,8 @@ void Serial::handleRead() {
     data.append(m_serialPort.readLine());
   }
   QString stringData = data;
-  if (!stringData.isEmpty()) {
+  QString totest = data;
+  if (!stringData.isEmpty() && verifyPacket(totest)) {
     auto parseResult = parsePacket(stringData);
     Q_EMIT onReceiveData(parseResult.first, parseResult.second);
   }
@@ -100,4 +101,29 @@ QPair<QString, double> Serial::parsePacket(const QString& data) {
   auto value = split.at(1).toDouble();
 
   return qMakePair(label, value);
+}
+bool Serial::verifyPacket(const QString& data) {
+  bool is_valid;
+  if (!data.contains("/")) {
+    return false;
+  }
+  auto splited = data.split("/");
+  if (!splited[0].contains(":") || !splited[1].contains(":")) {
+    return false;
+  }
+  auto left = splited[0].split(":");
+  auto right = splited[1].split(":");
+  int get_sumed = 0;
+  for (auto& i : left[1]) {
+    get_sumed += i.digitValue();
+  }
+  QString get_shifted;
+  for (auto i : right[0]) {
+    get_shifted.append(QChar(i.unicode() - 1));
+  }
+
+  if (left[0] == get_shifted && right[1].toInt() == get_sumed) {
+    return true;
+  }
+  return false;
 }

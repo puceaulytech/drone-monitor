@@ -5,12 +5,12 @@
 
 #include <QActionGroup>
 #include <QComboBox>
+#include <QLabel>
 #include <QPushButton>
 #include <QSerialPort>
 #include <QSerialPortInfo>
 #include <QVBoxLayout>
 #include <QWidget>
-#include <QLabel>
 
 class Serial : public QWidget {
   Q_OBJECT
@@ -33,7 +33,7 @@ private:
 
   static QPair<QString, double> parsePacket(const QString& data);
   void setupConnection();
-
+  bool verifyPacket(const QString& data);
 private Q_SLOTS:
   void refreshPorts();
   void changeBaudRate();
