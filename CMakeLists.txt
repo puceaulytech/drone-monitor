@@ -66,7 +66,7 @@ install(FILES LICENSE
 
 qt_generate_deploy_app_script(
     TARGET drone-monitor
-    FILENAME_VARIABLE deploy_script
+    OUTPUT_SCRIPT deploy_script
     NO_UNSUPPORTED_PLATFORM_ERROR
 )
 
