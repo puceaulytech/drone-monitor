@@ -42,6 +42,8 @@ private:
   // Timer initialization
   void setupTimer();
 
+  void handleButton();
+
   QGridLayout* m_mainLayout{nullptr};
   QWidget* m_mainWidget{nullptr};
 

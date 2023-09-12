@@ -13,12 +13,17 @@ class TextInput : public QWidget {
 
 public:
     explicit TextInput(QWidget* parent = nullptr);
-    void sendInput(const QString& input);
+    QString sendInput();
 
 private:
     QLineEdit* m_input;
     QPushButton* m_send;
     QHBoxLayout* m_layout;
+
+    void emitSignal();
+
+Q_SIGNALS:
+    void buttonClicked();
 };
 
 #endif

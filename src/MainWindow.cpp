@@ -70,6 +70,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
   });
 
   connect(m_serial, &Serial::onReceiveData, m_valuesViewer, &ValuesViewer::dataReceived);
+  connect(m_textInput, &TextInput::buttonClicked, this, &MainWindow::handleButton);
 }
 
 void MainWindow::setupMenus() {
@@ -133,4 +134,8 @@ void MainWindow::setupTimer() {
   m_mainTimer->setInterval(m_refreshRateMenu->refreshRate);
 
   m_mainTimer->start();
+}
+
+void MainWindow::handleButton() {
+    m_logViewer->printLog(m_textInput->sendInput());
 }
