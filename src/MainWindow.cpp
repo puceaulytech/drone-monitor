@@ -12,6 +12,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
   m_commands = new Commands;
   m_view3d = new View3D;
   m_serial = new Serial;
+  m_textInput = new TextInput;
 
   setWindowTitle("Drone Monitoring");
   resize(1920, 1080);
@@ -40,6 +41,11 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
   logDockWidget->setWidget(m_logViewer);
   addDockWidget(Qt::BottomDockWidgetArea, logDockWidget);
   m_viewMenu->addAction(logDockWidget->toggleViewAction());
+
+  auto* inputDockWidget = new QDockWidget("Text Input");
+  inputDockWidget->setWidget(m_textInput);
+  addDockWidget(Qt::BottomDockWidgetArea, inputDockWidget);
+  m_viewMenu->addAction(inputDockWidget->toggleViewAction());
 
   auto* serialDockWidget = new QDockWidget("Serial");
   serialDockWidget->setWidget(m_serial);
