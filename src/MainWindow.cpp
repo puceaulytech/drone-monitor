@@ -8,8 +8,10 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
   m_mainLayout = new QGridLayout;
   m_mainWidget = new QWidget;
   m_logViewer = new LogViewer;
+  m_valuesViewer = new ValuesViewer;
   m_commands = new Commands;
   m_view3d = new View3D;
+  m_serial = new Serial;
 
   setWindowTitle("Drone Monitoring");
   resize(1920, 1080);
@@ -17,7 +19,6 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
   setupActions();
   setupMenus();
   setupToolbar();
-  setupTimer();
   // Top left
   m_mainLayout->addWidget(QWidget::createWindowContainer(m_view3d), 0, 0);
 
@@ -40,6 +41,16 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
   addDockWidget(Qt::BottomDockWidgetArea, logDockWidget);
   m_viewMenu->addAction(logDockWidget->toggleViewAction());
 
+  auto* serialDockWidget = new QDockWidget("Serial");
+  serialDockWidget->setWidget(m_serial);
+  addDockWidget(Qt::RightDockWidgetArea, serialDockWidget);
+  m_viewMenu->addAction(serialDockWidget->toggleViewAction());
+
+  auto* valuesDockWidget = new QDockWidget("Values");
+  valuesDockWidget->setWidget(m_valuesViewer);
+  addDockWidget(Qt::RightDockWidgetArea, valuesDockWidget);
+  m_viewMenu->addAction(valuesDockWidget->toggleViewAction());
+
   m_logViewer->printLog("Starting Drone Monitor...");
 
   // Commands
@@ -51,6 +62,8 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
 
     m_biteObject.clear();
   });
+
+  connect(m_serial, &Serial::onReceiveData, m_valuesViewer, &ValuesViewer::dataReceived);
 }
 
 void MainWindow::setupMenus() {
@@ -58,15 +71,11 @@ void MainWindow::setupMenus() {
   m_settingsMenu = menuBar()->addMenu(tr("&Settings"));
   m_helpMenu = menuBar()->addMenu(tr("&Help"));
 
-  m_timerMenu = new QMenu("Refresh Rate");
-  m_helpMenu->insertActions(nullptr, {m_aboutQtAction, m_aboutAction});
-  m_settingsMenu->insertMenu(nullptr, m_timerMenu);
+  m_refreshRateMenu = new RefreshRateMenu("Refresh Rate");
 
-  QAction* previous = nullptr;
-  for (const auto& refreshAction : m_refreshActions) {
-    m_timerMenu->insertAction(previous, refreshAction.second);
-    previous = refreshAction.second;
-  }
+  m_helpMenu->insertActions(nullptr, {m_aboutQtAction, m_aboutAction});
+  m_settingsMenu->insertMenu(nullptr, m_refreshRateMenu);
+
 }
 
 void MainWindow::setupActions() {
@@ -75,13 +84,6 @@ void MainWindow::setupActions() {
 
   m_aboutAction = new QAction(tr("&About"), this);
   connect(m_aboutAction, &QAction::triggered, this, &MainWindow::showAbout);
-
-  QVector<int> initialRefreshRates = {1000, 100, 50, 10};
-
-  for (auto targetRefreshRate : initialRefreshRates)
-    m_refreshActions.append(
-        qMakePair(targetRefreshRate,
-                  new QAction(QString::number(targetRefreshRate) + " ms")));
 }
 
 void MainWindow::showAbout() {
@@ -97,7 +99,7 @@ void MainWindow::showAboutQt() {
 void MainWindow::setupToolbar() {
   QPixmap draw(":/images/draw.png");
   QPixmap center(":/images/center.png");
-  QPixmap ez(":/images/load.png");
+
   m_toolbar = addToolBar("Toolbar");
 
   m_drawFileAction = m_toolbar->addAction(QIcon(draw), "Draw File");
@@ -117,37 +119,12 @@ void MainWindow::setupToolbar() {
     m_logViewer->printLog("Centering the camera");
     m_view3d->centerCamera();
   });
-
-  m_loadAscii = m_toolbar->addAction(QIcon(ez), "Load Ascii");
-  connect(m_loadAscii, &QAction::triggered, this, [=]() {
-    m_geoSurface = new Surface(7.05346, 43.6154, 0.1);
-    // 43.45268203241274, 6.795364528013224
-    //(7.05346, 43.6154, 0.1)
-    // 50.80593839864178, 3.2336237136124435
-    m_geoViewer = QWidget::createWindowContainer(m_geoSurface);
-    auto* geoDockWidget = new QDockWidget("Geo Viewer");
-    geoDockWidget->setWidget(m_geoViewer);
-    addDockWidget(Qt::LeftDockWidgetArea, geoDockWidget);
-    m_viewMenu->addAction(geoDockWidget->toggleViewAction());
-    m_geoSurface->show();
-    connect(this, &MainWindow::timerUpdate, m_geoSurface->drone,
-            &Drone::updateTelemetry);
-    connect(this, &MainWindow::timerUpdate, this, [=] {
-      m_logViewer->printLog("refreshed position");
-    });
-  });
 }
-void MainWindow::setupTimer() {
-  m_refreshRate = 1000;
-  m_mainTimer = new QTimer;
-  m_mainTimer->setInterval(m_refreshRate);
 
-  for (const auto& refreshAction : m_refreshActions)
-    connect(refreshAction.second, &QAction::triggered, this, [=] {
-      m_refreshRate = refreshAction.first;
-      m_mainTimer->setInterval(m_refreshRate);
-    });
-  connect(m_mainTimer, &QTimer::timeout, this, &MainWindow::timerUpdate);
+void MainWindow::setupTimer() {
+  m_refreshRateMenu->refreshRate = 1000;
+  m_mainTimer = new QTimer;
+  m_mainTimer->setInterval(m_refreshRateMenu->refreshRate);
 
   m_mainTimer->start();
 }

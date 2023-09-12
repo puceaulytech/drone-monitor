@@ -7,6 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_AUTORCC ON)
 
+option(CUSTOM_STYLESHEET "Use custom stylecheet" ON)
 
 find_package(Qt6 REQUIRED COMPONENTS
     Widgets
@@ -17,12 +18,16 @@ find_package(Qt6 REQUIRED COMPONENTS
     3DExtras
     3DAnimation
     Network
-    DataVisualization
+    SerialPort
 )
 qt_standard_project_setup()
 
 file(GLOB_RECURSE SOURCES src/*.cpp)
 file(GLOB_RECURSE HEADERS include/*.hpp)
+
+if (CUSTOM_STYLESHEET)
+  add_compile_definitions(USE_CUSTOM_STYLESHEET)
+endif()
 
 add_executable(drone-monitor
     ${SOURCES}
@@ -33,7 +38,6 @@ add_executable(drone-monitor
 include_directories(include)
 
 target_link_libraries(drone-monitor PRIVATE
-    Qt6::DataVisualization
     Qt6::Widgets
     Qt6::3DCore
     Qt6::3DRender
@@ -41,6 +45,7 @@ target_link_libraries(drone-monitor PRIVATE
     Qt6::3DExtras
     Qt6::Network
     Qt6::3DAnimation
+    Qt6::SerialPort
 )
 
 set_target_properties(drone-monitor PROPERTIES
@@ -61,7 +66,7 @@ install(FILES LICENSE
 
 qt_generate_deploy_app_script(
     TARGET drone-monitor
-    FILENAME_VARIABLE deploy_script
+    OUTPUT_SCRIPT deploy_script
     NO_UNSUPPORTED_PLATFORM_ERROR
 )
 
@@ -80,6 +85,6 @@ set(CPACK_NSIS_PACKAGE_NAME ${PACKAGE_NAME})
 set(CPACK_NSIS_MANIFEST_DPI_AWARE ON)
 
 set(CPACK_DEBIAN_PACKAGE_ARCHITECTURE "amd64")
-set(CPACK_DEBIAN_PACKAGE_DEPENDS "libqt6widgets6, libqt63dcore6, libqt63dextras6, libqt63dinput6, libqt63drender6, libqt63danimation6, libqt6network6")
+set(CPACK_DEBIAN_PACKAGE_DEPENDS "libqt6widgets6, libqt63dcore6, libqt63dextras6, libqt63dinput6, libqt63drender6, libqt63danimation6, libqt6network6, libqt6serialport6")
 
 include(CPack)

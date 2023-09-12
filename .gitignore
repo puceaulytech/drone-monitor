@@ -657,3 +657,4 @@ FodyWeavers.xsd
 # End of https://www.toptal.com/developers/gitignore/api/qt,qtcreator,cmake,c++,clion,visualstudio,visualstudiocode
 
 build
+.idea
