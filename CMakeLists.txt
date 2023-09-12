@@ -19,6 +19,7 @@ find_package(Qt6 REQUIRED COMPONENTS
     3DAnimation
     Network
     SerialPort
+    Sql
 )
 qt_standard_project_setup()
 
@@ -46,6 +47,7 @@ target_link_libraries(drone-monitor PRIVATE
     Qt6::Network
     Qt6::3DAnimation
     Qt6::SerialPort
+    Qt6::Sql
 )
 
 set_target_properties(drone-monitor PROPERTIES
