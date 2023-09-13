@@ -7,7 +7,7 @@
 
 const QString Database::DRIVER("QPSQL");
 
-Database::Database(const QString& database_name, const QString& username, const QString& password, const QString& connection_name) : connection_name(connection_name) {
+Database::Database(QString database_name, QString username, QString password, QString connection_name) : connection_name(connection_name) {
 
     if(not QSqlDatabase::isDriverAvailable(DRIVER)) {
         // error handling 
@@ -15,6 +15,9 @@ Database::Database(const QString& database_name, const QString& username, const 
 
     QSqlDatabase db = QSqlDatabase::addDatabase(DRIVER, connection_name);
     db.setDatabaseName(database_name);
+    db.setHostName("localhost");
+    db.setUserName(username);
+    db.setPassword(password);
     if(!db.open()) {
         // error handling again
     }

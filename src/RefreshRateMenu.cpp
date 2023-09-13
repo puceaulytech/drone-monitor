@@ -14,7 +14,7 @@ RefreshRateMenu::RefreshRateMenu(const QString& title, QWidget* parent) : QMenu(
   QAction* previous = nullptr;
   for (const auto& refreshAction : m_refreshActions) {
     insertAction(previous, refreshAction.second);
-    connect(refreshAction.second, &QAction::triggered, this, [=] {
+    connect(refreshAction.second, &QAction::triggered, this, [this, refreshAction] {
       refreshRate = refreshAction.first;
     });
 

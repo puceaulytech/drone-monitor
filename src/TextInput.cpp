@@ -1,6 +1,10 @@
+#include <format>
+
 #include <TextInput.hpp>
 
 TextInput::TextInput(QWidget* parent) : QWidget(parent) {
+    Database m_db("zireael-db", "api", "Test1234", "zireael");
+
     m_layout = new QHBoxLayout;
 
     m_send = new QPushButton("Send to database");
@@ -19,5 +23,6 @@ void TextInput::emitSignal() {
 }
 
 QString TextInput::sendInput() {
-    return m_input->displayText();
+    m_db.execute(m_input->displayText());
+    return "Did something";
 }

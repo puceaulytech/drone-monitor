@@ -6,10 +6,10 @@
 
 class Database {
     public:
-        Database(const QString& db_name, const QString& username, const QString& pwd, const QString&);
+        Database(QString db_name, QString username, QString pwd, QString cnct_name);
         ~Database();
 
-        const bool execute(const QString&);
+        const bool execute(const QString& query);
 
     private:
         static const QString DRIVER;

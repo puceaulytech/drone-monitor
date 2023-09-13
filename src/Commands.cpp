@@ -9,22 +9,22 @@ Commands::Commands(QWidget* parent) : QWidget(parent) {
   m_autoDestruction = new QPushButton("Auto-destruction");
 
   m_layout->addWidget(m_startDrone);
-  connect(m_startDrone, &QPushButton::clicked, this, [=]() {
+  connect(m_startDrone, &QPushButton::clicked, this, [this]() {
     emit startDrone();
   });
 
   m_layout->addWidget(m_stopDrone);
-  connect(m_stopDrone, &QPushButton::clicked, this, [=]() {
+  connect(m_stopDrone, &QPushButton::clicked, this, [this]() {
     emit stopDrone();
   });
 
   m_layout->addWidget(m_doSomething);
-  connect(m_doSomething, &QPushButton::clicked, this, [=]() {
+  connect(m_doSomething, &QPushButton::clicked, this, [this]() {
     emit doSomething();
   });
 
   m_layout->addWidget(m_autoDestruction);
-  connect(m_autoDestruction, &QPushButton::clicked, this, [=]() {
+  connect(m_autoDestruction, &QPushButton::clicked, this, [this]() {
     emit autoDestruction();
   });
 

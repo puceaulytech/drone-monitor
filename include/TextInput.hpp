@@ -8,6 +8,8 @@
 #include <QWidget>
 #include <QHBoxLayout>
 
+#include <Database.hpp>
+
 class TextInput : public QWidget {
     Q_OBJECT
 
@@ -16,6 +18,8 @@ public:
     QString sendInput();
 
 private:
+    Database m_db;
+
     QLineEdit* m_input;
     QPushButton* m_send;
     QHBoxLayout* m_layout;

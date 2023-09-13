@@ -61,7 +61,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
 
   // Commands
 
-  connect(m_commands, &Commands::autoDestruction, this, [=]() {
+  connect(m_commands, &Commands::autoDestruction, this, [this]() {
     m_logViewer->printLog("KABOOM");
 
     for (auto object : m_biteObject) delete object;
@@ -111,7 +111,7 @@ void MainWindow::setupToolbar() {
 
   m_drawFileAction = m_toolbar->addAction(QIcon(draw), "Draw File");
 
-  connect(m_drawFileAction, &QAction::triggered, this, [=] {
+  connect(m_drawFileAction, &QAction::triggered, this, [this] {
     auto targetFilename = QFileDialog::getOpenFileName(
         this, "Open 3D Object", QDir::currentPath(), "Text files (*.txt)");
     if (targetFilename.isEmpty()) return;
@@ -122,7 +122,7 @@ void MainWindow::setupToolbar() {
   m_toolbar->addSeparator();
   m_centerCamAction = m_toolbar->addAction(QIcon(center), "Center Camera");
 
-  connect(m_centerCamAction, &QAction::triggered, this, [=]() {
+  connect(m_centerCamAction, &QAction::triggered, this, [this]() {
     m_logViewer->printLog("Centering the camera");
     m_view3d->centerCamera();
   });
