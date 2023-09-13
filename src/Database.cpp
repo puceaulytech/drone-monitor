@@ -2,6 +2,7 @@
 #include <QSqlDriver>
 #include <QSqlError>
 #include <QSqlQuery>
+#include <iostream>
 
 #include <Database.hpp>
 
@@ -20,6 +21,15 @@ Database::Database(QString database_name, QString username, QString password, QS
     db.setPassword(password);
     if(!db.open()) {
         // error handling again
+    } else {
+        // check if table exists
+        QSqlQuery query("SELECT EXISTS ( SELECT FROM pg_tables WHERE tablename='test' )", db);
+        // next entry in record 
+        query.next();
+        // if the query returns false
+        if (!query.value(0).toBool()) {
+            query.exec("CREATE TABLE test (id SERIAL, name TEXT, value INT)");
+        }
     }
 }
 
