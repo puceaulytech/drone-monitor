@@ -18,7 +18,7 @@ public:
     QString sendInput();
 
 private:
-    Database m_db;
+    Database* m_db;
 
     QLineEdit* m_input;
     QPushButton* m_send;

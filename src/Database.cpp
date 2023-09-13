@@ -23,6 +23,8 @@ Database::Database(QString database_name, QString username, QString password, QS
     }
 }
 
+Database::Database() {}
+
 Database::~Database()
 {
     QSqlDatabase::removeDatabase(connection_name);

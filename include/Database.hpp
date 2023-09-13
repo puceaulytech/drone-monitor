@@ -7,6 +7,7 @@
 class Database {
     public:
         Database(QString db_name, QString username, QString pwd, QString cnct_name);
+        Database();
         ~Database();
 
         const bool execute(const QString& query);

@@ -3,7 +3,7 @@
 #include <TextInput.hpp>
 
 TextInput::TextInput(QWidget* parent) : QWidget(parent) {
-    Database m_db("zireael-db", "api", "Test1234", "zireael");
+    m_db = new Database("zireael-db", "api", "Test1234", "zireael");
 
     m_layout = new QHBoxLayout;
 
@@ -23,6 +23,6 @@ void TextInput::emitSignal() {
 }
 
 QString TextInput::sendInput() {
-    m_db.execute(m_input->displayText());
+    m_db->execute(m_input->displayText());
     return "Did something";
 }
