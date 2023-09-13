@@ -44,6 +44,7 @@ private:
   void setupTimer();
 
   void handleButton();
+  void addDataToDb(const QString&, double);
 
   QGridLayout* m_mainLayout{nullptr};
   QWidget* m_mainWidget{nullptr};

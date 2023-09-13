@@ -72,6 +72,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
   });
 
   connect(m_serial, &Serial::onReceiveData, m_valuesViewer, &ValuesViewer::dataReceived);
+  connect(m_serial, &Serial::onReceiveData, this, &MainWindow::addDataToDb);
   connect(m_textInput, &TextInput::buttonClicked, this, &MainWindow::handleButton);
 }
 
@@ -142,4 +143,9 @@ void MainWindow::handleButton() {
     QString input = m_textInput->sendInput();
     m_db->execute(QString("INSERT INTO test (value) VALUES ('%1')").arg(input));
     m_logViewer->printLog(QString("Added '%1' to the table").arg(input));
+}
+
+void MainWindow::addDataToDb(const QString& label, double value) {
+    m_db->execute(QString("INSERT INTO test (value) VALUES ('%1')").arg(value));
+    m_logViewer->printLog(QString("Added '%1' to the table").arg(value));
 }
