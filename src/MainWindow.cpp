@@ -5,6 +5,8 @@
 #include <QMessageBox>
 
 MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
+  m_db = new Database("zireael-db", "api", "Test1234", "zireael");
+    
   m_mainLayout = new QGridLayout;
   m_mainWidget = new QWidget;
   m_logViewer = new LogViewer;
@@ -137,5 +139,7 @@ void MainWindow::setupTimer() {
 }
 
 void MainWindow::handleButton() {
-    m_logViewer->printLog(m_textInput->sendInput());
+    QString input = m_textInput->sendInput();
+    m_db->execute(QString("INSERT INTO test (value) VALUES ('%1')").arg(input));
+    m_logViewer->printLog(QString("Added '%1' to the table").arg(input));
 }

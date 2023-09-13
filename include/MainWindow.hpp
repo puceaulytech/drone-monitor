@@ -18,6 +18,7 @@
 #include <ValuesViewer.hpp>
 #include <View3D.hpp>
 #include <TextInput.hpp>
+#include <Database.hpp>
 
 class MainWindow : public QMainWindow {
   Q_OBJECT
@@ -53,6 +54,8 @@ private:
   View3D* m_view3d{nullptr};
   Serial* m_serial{nullptr};
   TextInput* m_textInput{nullptr};
+  Database* m_db;
+
 
   // Menus
   QMenu* m_viewMenu{nullptr};

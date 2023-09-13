@@ -3,8 +3,6 @@
 #include <TextInput.hpp>
 
 TextInput::TextInput(QWidget* parent) : QWidget(parent) {
-    m_db = new Database("zireael-db", "api", "Test1234", "zireael");
-
     m_layout = new QHBoxLayout;
 
     m_send = new QPushButton("Send to database");
@@ -25,6 +23,5 @@ void TextInput::emitSignal() {
 QString TextInput::sendInput() {
     QString input = m_input->displayText();
     m_input->clear();
-    m_db->execute(QString("INSERT INTO test (value) VALUES ('%1')").arg(input));
-    return QString("Added '%1' to the table").arg(input);
+    return input;
 }
