@@ -23,6 +23,8 @@ void TextInput::emitSignal() {
 }
 
 QString TextInput::sendInput() {
-    m_db->execute(m_input->displayText());
-    return "Did something";
+    QString input = m_input->displayText();
+    m_input->clear();
+    m_db->execute(QString("INSERT INTO test (value) VALUES ('%1')").arg(input));
+    return QString("Added '%1' to the table").arg(input);
 }

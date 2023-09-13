@@ -28,7 +28,7 @@ Database::Database(QString database_name, QString username, QString password, QS
         query.next();
         // if the query returns false
         if (!query.value(0).toBool()) {
-            query.exec("CREATE TABLE test (id SERIAL, name TEXT, value INT)");
+            query.exec("CREATE TABLE test (id SERIAL, value TEXT)");
         }
     }
 }
